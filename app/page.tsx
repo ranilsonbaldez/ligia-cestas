@@ -1,65 +1,134 @@
-import Image from "next/image";
+"use client";
+import { useState } from "react";
+
+const cestas = [
+  {
+    id: 1,
+    nome: "Cesta Amanhecer Premium",
+    preco: "185,00",
+    imagem: "https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?q=80&w=500",
+    itens: ["Suco de Laranja Natural", "Caneca de Porcelana", "Croissants Amanteigados", "Geleia Artesanal", "Frutas da Estação", "Cartão Personalizado"]
+  },
+  {
+    id: 2,
+    nome: "Cesta Paixão & Vinho",
+    preco: "250,00",
+    imagem: "https://images.unsplash.com/photo-1559181567-c3190ca9959b?q=80&w=500",
+    itens: ["Vinho Tinto Reservado", "Tábua de Queijos", "Torradas Finas", "Bombons Ferrero", "Cesta de Vime Decorada", "Arranjo de Rosas"]
+  }
+];
 
 export default function Home() {
+  const [modalAberto, setModalAberto] = useState(false);
+  const [cestaSelecionada, setCestaSelecionada] = useState(null);
+
+  // Função corrigida e fechada corretamente
+  const abrirFormulario = (cesta) => {
+    setCestaSelecionada(cesta);
+    setModalAberto(true);
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <main className="min-h-screen bg-soft">
+      {/* Cabeçalho */}
+      <header className="w-full bg-primary py-12 px-4 border-b-4 border-secondary shadow-2xl">
+        <div className="max-w-6xl mx-auto text-center">
+          <h1 className="text-4xl md:text-6xl font-serif font-bold text-secondary tracking-widest">
+            Lígia Cestas & Presentes
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="mt-3 text-accent italic text-lg md:text-2xl font-light tracking-wide">
+            Momentos Inesquecíveis
           </p>
+          <div className="mt-6 flex justify-center items-center gap-4">
+            <div className="h-[1px] w-16 bg-secondary/40"></div>
+            <span className="text-secondary">✦</span>
+            <div className="h-[1px] w-16 bg-secondary/40"></div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </header>
+
+      {/* Seção de Cards */}
+      <section className="max-w-7xl mx-auto py-12 px-4">
+        <h2 className="text-3xl font-serif text-primary text-center mb-12 uppercase tracking-[0.2em]">
+          Nossos Cardápios
+        </h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          {cestas.map((cesta) => (
+            <div key={cesta.id} className="bg-white rounded-xl shadow-xl overflow-hidden flex flex-col border border-accent/20 hover:scale-[1.02] transition-transform duration-300">
+              <div className="bg-primary p-4 text-center">
+                <h3 className="text-xl font-serif font-bold text-secondary uppercase tracking-tight">
+                  {cesta.nome}
+                </h3>
+              </div>
+              <div className="h-64 overflow-hidden">
+                <img src={cesta.imagem} alt={cesta.nome} className="w-full h-full object-cover" />
+              </div>
+              <div className="p-6 flex-grow flex flex-col">
+                <div className="text-center mb-6">
+                  <span className="text-sm text-gray-500 block uppercase italic font-medium">Investimento</span>
+                  <span className="text-3xl font-bold text-primary">R$ {cesta.preco}</span>
+                </div>
+                <div className="flex-grow">
+                  <h4 className="text-secondary font-bold uppercase text-xs mb-3 tracking-widest border-b border-secondary/20 pb-1">
+                    O que contém:
+                  </h4>
+                  <ul className="space-y-2 mb-8">
+                    {cesta.itens.map((item, index) => (
+                      <li key={index} className="text-gray-700 text-sm flex items-center gap-2">
+                        <span className="text-accent text-xs">❤</span> {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                {/* Botão conectado à função abrirFormulario */}
+                <button 
+                  onClick={() => abrirFormulario(cesta)}
+                  className="w-full bg-secondary text-primary font-bold py-4 rounded-lg hover:bg-[#c29d2f] transition-colors shadow-lg uppercase tracking-widest text-sm"
+                >
+                  Quero Essa
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* Modal do Formulário */}
+      {modalAberto && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end md:items-center justify-center p-0 md:p-4">
+          <div className="bg-white w-full max-w-lg rounded-t-2xl md:rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white p-4 border-b flex justify-between items-center z-10">
+              <h3 className="font-serif font-bold text-primary italic">Pedido: {cestaSelecionada?.nome}</h3>
+              <button onClick={() => setModalAberto(false)} className="text-gray-400 text-2xl px-2 hover:text-primary transition-colors">✕</button>
+            </div>
+            
+            <form className="p-6 space-y-4" onSubmit={(e) => e.preventDefault()}>
+              <div>
+                <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Seu Nome</label>
+                <input type="text" className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Quem está pedindo?" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Data</label>
+                  <input type="date" className="w-full border border-gray-200 p-3 rounded-lg outline-none" />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Horário</label>
+                  <input type="time" className="w-full border border-gray-200 p-3 rounded-lg outline-none" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Endereço de Entrega</label>
+                <textarea className="w-full border border-gray-200 p-3 rounded-lg outline-none" rows={2} placeholder="Rua, número, bairro e ponto de referência"></textarea>
+              </div>
+              <button type="submit" className="w-full bg-green-600 text-white font-bold py-4 rounded-lg shadow-lg hover:bg-green-700 transition">
+                AVANÇAR PARA O PAGAMENTO
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+    </main>
   );
 }
