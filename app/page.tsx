@@ -7,7 +7,7 @@ const cestas = [
     nome: "Cesta Amanhecer Premium",
     preco: "185,00",
     imagem: "https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?q=80&w=500",
-    itens: ["Suco de Laranja Natural", "Caneca de Porcelana", "Croissants Amanteigados", "Geleia Artesanal", "Frutas da Estação", "Cartão Personalizado"]
+    itens: ["Suco de Laranja Natural", "Caneca de Porcelana", "Croissants Amanteigados", "Geleia Artesanal", "Frutas da Estação", "Frutas da Estação", "Cartão Personalizado"]
   },
   {
     id: 2,
@@ -108,9 +108,13 @@ export default function Home() {
                 <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Seu Nome</label>
                 <input type="text" className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Quem está pedindo?" />
               </div>
+                            <div>
+                <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Quem vai receber a cesta?</label>
+                <input type="text" className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Quem está pedindo?" />
+              </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Data</label>
+                  <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Data Entrega</label>
                   <input type="date" className="w-full border border-gray-200 p-3 rounded-lg outline-none" />
                 </div>
                 <div>
