@@ -90,13 +90,16 @@ export default function Home() {
               </div>
 
               {/* CORREÇÃO 2: 'h-48' em vez de 'h-64' para reduzir a imagem */}
-              <div className="relative h-48 w-full border-b border-accent/10 bg-accent/5 p-2">
+              <div
+                className="relative w-full border-b border-accent/10 overflow-hidden"
+                style={{ aspectRatio: "1200 / 896" }}
+              >
                 <Image
                   src={cesta.imagem}
                   alt={cesta.nome}
                   fill
                   unoptimized
-                  className="object-contain"
+                  className="object-cover"
                 />
               </div>
 
