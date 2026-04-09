@@ -1,45 +1,13 @@
 "use client";
-import { useState } from "react";
-
-const cestas = [
-  {
-    id: 1,
-    nome: "Cesta Amanhecer Premium",
-    preco: "185,00",
-    imagem:
-      "https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?q=80&w=500",
-    itens: [
-      "Suco de Laranja Natural",
-      "Caneca de Porcelana",
-      "Croissants Amanteigados",
-      "Geleia Artesanal",
-      "Frutas da Estação",
-      "Cartão Personalizado",
-    ],
-  },
-  {
-    id: 2,
-    nome: "Cesta Paixão & Vinho",
-    preco: "250,00",
-    imagem:
-      "https://images.unsplash.com/photo-1559181567-c3190ca9959b?q=80&w=500",
-    itens: [
-      "Vinho Tinto Reservado",
-      "Tábua de Queijos",
-      "Torradas Finas",
-      "Bombons Ferrero",
-      "Cesta de Vime Decorada",
-      "Arranjo de Rosas",
-    ],
-  },
-];
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import { cestas } from "./cestas";
 
 export default function Home() {
   const [modalAberto, setModalAberto] = useState(false);
-  const [etapa, setEtapa] = useState(1); // 1: Form, 2: Pagamento
+  const [etapa, setEtapa] = useState(1);
   const [cestaSelecionada, setCestaSelecionada] = useState(null);
 
-  // Estados do Formulário
   const [form, setForm] = useState({
     nome: "",
     destinatario: "",
@@ -49,21 +17,34 @@ export default function Home() {
     metodoPgto: "",
   });
 
+  // SOLUÇÃO PARA O ERRO DE LINT: Gerenciar o scroll via useEffect
+  useEffect(() => {
+    if (modalAberto) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    // Limpa o estilo caso o componente seja desmontado
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [modalAberto]);
+
   const abrirFormulario = (cesta) => {
-    document.body.style.overflow = "hidden";
     setCestaSelecionada(cesta);
     setEtapa(1);
     setModalAberto(true);
   };
 
   const fecharFormulario = () => {
-    document.body.style.overflow = "auto";
     setModalAberto(false);
   };
 
   const handleWhatsApp = () => {
+    if (!cestaSelecionada) return;
+
     const msg = `*Pedido: ${cestaSelecionada.nome}*%0A*De:* ${form.nome}%0A*Para:* ${form.destinatario}%0A*Data:* ${form.data} às ${form.horario}%0A*Endereço:* ${form.endereco}%0A*Pagamento:* ${form.metodoPgto}`;
-    window.open(`https://wa.me/5598900000000?text=${msg}`, "_blank"); // Substitua pelo seu número
+    window.open(`https://wa.me/5598900000000?text=${msg}`, "_blank");
   };
 
   return (
@@ -76,6 +57,11 @@ export default function Home() {
           <p className="mt-3 text-accent italic text-lg md:text-2xl font-light tracking-wide">
             Momentos Inesquecíveis pra você
           </p>
+          <div className="mt-6 flex justify-center items-center gap-4">
+            <div className="h-[1px] w-16 bg-secondary/40"></div>
+            <span className="text-secondary">✦</span>
+            <div className="h-[1px] w-16 bg-secondary/40"></div>
+          </div>
         </div>
       </header>
 
@@ -94,11 +80,15 @@ export default function Home() {
                   {cesta.nome}
                 </h3>
               </div>
-              <img
-                src={cesta.imagem}
-                alt={cesta.nome}
-                className="h-64 w-full object-cover"
-              />
+              <div className="relative h-64 w-full">
+                <Image
+                  src={cesta.imagem}
+                  alt={cesta.nome}
+                  fill
+                  className="object-cover"
+                  unoptimized // Como são links externos do Unsplash, usamos isso para não precisar configurar domínios agora
+                />
+              </div>
               <div className="p-6 flex-grow flex flex-col">
                 <div className="text-center mb-6">
                   <span className="text-sm text-gray-500 block uppercase italic">
@@ -132,9 +122,11 @@ export default function Home() {
       </section>
 
       {modalAberto && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[9999] flex items-end md:items-center justify-center p-0 md:p-4 touch-manipulation">
-          <div className="bg-white w-full max-w-lg rounded-t-2xl md:rounded-2xl shadow-2xl max-h-[95vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white p-4 border-b flex justify-between items-center z-10">
+        /* 1. O fundo escuro agora tem 'p-4' e 'items-center' para centralizar e dar folga nas laterais */
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-4 touch-manipulation">
+          <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto">
+            {/* Cabeçalho do Modal */}
+            <div className="sticky top-0 bg-white p-5 border-b flex justify-between items-center z-10">
               <h3 className="font-serif font-bold text-primary italic">
                 Pedido: {cestaSelecionada?.nome}
               </h3>
@@ -145,126 +137,87 @@ export default function Home() {
                 ✕
               </button>
             </div>
-
-            <div className="p-6">
-              {etapa === 1 ? (
-                <form
-                  className="space-y-4"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    setEtapa(2);
-                  }}
-                >
-                  <input
-                    type="text"
-                    placeholder="Seu Nome"
-                    required
-                    className="w-full border p-3 rounded-lg outline-none focus:ring-2 focus:ring-primary"
-                    onChange={(e) => setForm({ ...form, nome: e.target.value })}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Quem vai receber?"
-                    required
-                    className="w-full border p-3 rounded-lg outline-none focus:ring-2 focus:ring-primary"
-                    onChange={(e) =>
-                      setForm({ ...form, destinatario: e.target.value })
-                    }
-                  />
-                  <div className="grid grid-cols-2 gap-4">
+            <div className="p-6 md:p-8">
+              <div className="max-w-md mx-auto">
+                {etapa === 1 ? (
+                  <form
+                    className="space-y-4"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      setEtapa(2);
+                    }}
+                  >
                     <input
-                      type="date"
+                      type="text"
+                      placeholder="Seu Nome"
                       required
-                      className="border p-3 rounded-lg outline-none"
+                      className="w-full border border-gray-200 p-3 px-4 rounded-lg outline-none focus:ring-2 focus:ring-primary shadow-sm"
                       onChange={(e) =>
-                        setForm({ ...form, data: e.target.value })
+                        setForm({ ...form, nome: e.target.value })
                       }
                     />
                     <input
-                      type="time"
+                      type="text"
+                      placeholder="Quem vai receber?"
                       required
-                      className="border p-3 rounded-lg outline-none"
+                      className="w-full border border-gray-200 p-3 px-4 rounded-lg outline-none focus:ring-2 focus:ring-primary shadow-sm"
                       onChange={(e) =>
-                        setForm({ ...form, horario: e.target.value })
+                        setForm({ ...form, destinatario: e.target.value })
                       }
                     />
-                  </div>
-                  <textarea
-                    placeholder="Endereço Completo"
-                    required
-                    className="w-full border p-3 rounded-lg outline-none"
-                    rows={2}
-                    onChange={(e) =>
-                      setForm({ ...form, endereco: e.target.value })
-                    }
-                  />
-                  <button
-                    type="submit"
-                    className="w-full bg-primary text-white font-bold py-4 rounded-lg shadow-lg uppercase tracking-widest"
-                  >
-                    Avançar para Pagamento
-                  </button>
-                </form>
-              ) : (
-                <div className="space-y-6 animate-in fade-in slide-in-from-right-4">
-                  <h4 className="font-bold text-primary uppercase text-sm">
-                    Escolha a forma de pagamento:
-                  </h4>
-                  <div className="grid grid-cols-2 gap-4">
-                    <button
-                      onClick={() => setForm({ ...form, metodoPgto: "Pix" })}
-                      className={`p-4 border-2 rounded-xl flex flex-col items-center ${form.metodoPgto === "Pix" ? "border-primary bg-primary/5" : "border-gray-100"}`}
-                    >
-                      <span className="text-2xl">📱</span>
-                      <span className="font-bold">Pix</span>
-                    </button>
-                    <button
-                      onClick={() => setForm({ ...form, metodoPgto: "Cartão" })}
-                      className={`p-4 border-2 rounded-xl flex flex-col items-center ${form.metodoPgto === "Cartão" ? "border-primary bg-primary/5" : "border-gray-100"}`}
-                    >
-                      <span className="text-2xl">💳</span>
-                      <span className="font-bold">Cartão</span>
-                    </button>
-                  </div>
-
-                  {form.metodoPgto === "Pix" && (
-                    <div className="bg-gray-50 p-4 rounded-lg text-center border-2 border-dashed border-gray-200">
-                      <p className="text-xs font-bold text-gray-500 uppercase">
-                        Chave Pix (Celular):
-                      </p>
-                      <p className="text-lg font-mono font-bold text-primary">
-                        98988887777
-                      </p>
-                      <button className="text-xs text-blue-600 font-bold mt-2">
-                        Copiar Chave
-                      </button>
+                    <div className="grid grid-cols-2 gap-4">
+                      <input
+                        type="date"
+                        required
+                        className="border border-gray-200 p-3 rounded-lg outline-none focus:ring-2 focus:ring-primary"
+                        onChange={(e) =>
+                          setForm({ ...form, data: e.target.value })
+                        }
+                      />
+                      <input
+                        type="time"
+                        required
+                        className="border border-gray-200 p-3 rounded-lg outline-none focus:ring-2 focus:ring-primary"
+                        onChange={(e) =>
+                          setForm({ ...form, horario: e.target.value })
+                        }
+                      />
                     </div>
-                  )}
+                    <textarea
+                      placeholder="Endereço Completo"
+                      required
+                      className="w-full border border-gray-200 p-3 px-4 rounded-lg outline-none focus:ring-2 focus:ring-primary shadow-sm"
+                      rows={3}
+                      onChange={(e) =>
+                        setForm({ ...form, endereco: e.target.value })
+                      }
+                    />
+                    <button
+                      type="submit"
+                      className="w-full bg-primary text-white font-bold py-4 rounded-lg shadow-lg uppercase tracking-widest active:scale-95 transition-transform"
+                    >
+                      Avançar para Pagamento
+                    </button>
+                  </form>
+                ) : (
+                  <div className="space-y-6 animate-in fade-in slide-in-from-right-4">
+                    {/* O conteúdo do pagamento aqui (Pix/Cartão) */}
+                    <h4 className="font-bold text-primary uppercase text-sm text-center">
+                      Escolha a forma de pagamento:
+                    </h4>
 
-                  {form.metodoPgto === "Cartão" && (
-                    <div className="bg-rose-50 p-4 rounded-lg text-sm text-rose-900 border border-rose-200">
-                      ⚠ Taxas da maquininha: 2% Débito | 5% Crédito.
-                      <p className="mt-2 font-bold underline cursor-pointer">
-                        Acessar Link de Pagamento
-                      </p>
-                    </div>
-                  )}
+                    {/* ... mantenha seus botões de Pix e Cartão aqui ... */}
 
-                  <button
-                    onClick={handleWhatsApp}
-                    disabled={!form.metodoPgto}
-                    className="w-full bg-green-600 text-white font-bold py-4 rounded-lg shadow-xl hover:bg-green-700 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
-                  >
-                    PEDIR NO WHATSAPP ➔
-                  </button>
-                  <button
-                    onClick={() => setEtapa(1)}
-                    className="w-full text-gray-400 text-xs uppercase font-bold tracking-widest"
-                  >
-                    ← Voltar aos dados
-                  </button>
-                </div>
-              )}
+                    <button
+                      type="button"
+                      onClick={handleWhatsApp}
+                      className="w-full bg-green-600 text-white font-bold py-4 rounded-lg shadow-xl hover:bg-green-700 flex items-center justify-center gap-2"
+                    >
+                      PEDIR NO WHATSAPP ➔
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
