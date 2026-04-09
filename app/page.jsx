@@ -68,53 +68,64 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="max-w-7xl mx-auto py-12 px-4">
-        <h2 className="text-3xl font-serif text-primary text-center mb-12 uppercase tracking-[0.2em]">
+      {/* --- Grid de Cestas Atualizado (Slim) --- */}
+      <section className="max-w-7xl mx-auto py-10 px-4">
+        <h2 className="text-2xl font-serif text-primary text-center mb-8 uppercase tracking-[0.2em] leading-none">
           Nossos Cardápios
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+
+        {/* Ajuste no Grid: Adicionado p-2 e items-start */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-2 items-start">
           {cestas.map((cesta) => (
             <div
               key={cesta.id}
-              className="bg-white rounded-xl shadow-xl overflow-hidden flex flex-col border border-accent/20 hover:scale-[1.02] transition-transform duration-300"
+              /* CORREÇÃO 1: 'max-w-xs' e 'mx-auto' para o card flutuar e centralizar no celular */
+              className="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col border border-accent/15 max-w-xs mx-auto hover:scale-[1.01] transition-transform duration-300 w-full"
             >
-              <div className="bg-primary p-4 text-center">
-                <h3 className="text-xl font-serif font-bold text-secondary tracking-tight">
+              {/* Cabeçalho do Card - Slim */}
+              <div className="bg-primary p-3 text-center border-b-2 border-secondary/30">
+                <h3 className="text-lg font-serif font-bold text-secondary uppercase tracking-tighter leading-tight truncate">
                   {cesta.nome}
                 </h3>
               </div>
-              <div className="relative h-64 w-full">
+
+              {/* CORREÇÃO 2: 'h-48' em vez de 'h-64' para reduzir a imagem */}
+              <div className="relative h-48 w-full border-b border-accent/10">
                 <Image
                   src={cesta.imagem}
                   alt={cesta.nome}
                   fill
+                  unoptimized
                   className="object-cover"
-                  unoptimized // Como são links externos do Unsplash, usamos isso para não precisar configurar domínios agora
                 />
               </div>
-              <div className="p-6 flex-grow flex flex-col">
-                <div className="text-center mb-6">
-                  <span className="text-sm text-gray-500 block uppercase italic">
-                    Investimento
-                  </span>
-                  <span className="text-3xl font-bold text-primary">
+
+              {/* Container de conteúdo - Padding Reduzido */}
+              <div className="p-5 flex-grow flex flex-col">
+                {/* CORREÇÃO 3: Preço e Título mais compactos */}
+                <div className="text-center mb-4">
+                  <span className="text-2xl font-bold text-primary">
                     R$ {cesta.preco}
                   </span>
                 </div>
-                <ul className="space-y-2 mb-8 flex-grow">
+
+                {/* CORREÇÃO 4: Lista Slim - Fonte 'xs', espaçamento 'space-y-1.5' */}
+                <ul className="space-y-1.5 mb-6 flex-grow border-t border-accent/5 pt-3">
                   {cesta.itens.map((item, i) => (
                     <li
                       key={i}
-                      className="text-gray-700 text-sm flex items-center gap-2"
+                      className="text-gray-600 text-xs flex items-center gap-2 leading-tight"
                     >
-                      <span className="text-accent text-xs">❤</span> {item}
+                      <span className="text-accent text-[9px]">❤</span> {item}
                     </li>
                   ))}
                 </ul>
+
+                {/* Botão Slim - 'py-3' e fonte 'xs' */}
                 <button
                   type="button"
                   onClick={() => abrirFormulario(cesta)}
-                  className="w-full bg-secondary text-primary font-bold py-4 rounded-lg active:scale-95 transition-all shadow-lg uppercase tracking-widest text-sm cursor-pointer touch-manipulation"
+                  className="w-full bg-secondary text-primary font-bold py-3.5 rounded-xl active:scale-95 transition-all shadow-lg uppercase tracking-widest text-xs cursor-pointer touch-manipulation"
                 >
                   Quero Essa
                 </button>
@@ -123,6 +134,7 @@ export default function Home() {
           ))}
         </div>
       </section>
+      {/* ------------------------------------- */}
 
       {modalAberto && (
         /* 1. Overlay centralizado com p-4 para folga lateral em mobile */
