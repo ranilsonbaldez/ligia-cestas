@@ -90,13 +90,13 @@ export default function Home() {
               </div>
 
               {/* CORREÇÃO 2: 'h-48' em vez de 'h-64' para reduzir a imagem */}
-              <div className="relative h-48 w-full border-b border-accent/10">
+              <div className="relative h-48 w-full border-b border-accent/10 bg-accent/5 p-2">
                 <Image
                   src={cesta.imagem}
                   alt={cesta.nome}
                   fill
                   unoptimized
-                  className="object-cover"
+                  className="object-contain"
                 />
               </div>
 

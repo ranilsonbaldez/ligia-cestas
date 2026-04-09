@@ -3,8 +3,7 @@ export const cestas = [
     id: 1,
     nome: "Café Bom dia com Amor",
     preco: "80,00",
-    imagem:
-      "https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?q=80&w=500",
+    imagem: "/bom-dia.png",
     itens: [
       "Caixa Decorativa",
       "Cartinha Personalizada",
@@ -23,8 +22,7 @@ export const cestas = [
     id: 2,
     nome: "Café Manhã dos Sonhos",
     preco: "180,00",
-    imagem:
-      "https://images.unsplash.com/photo-1517260911058-0fcfd733702f?q=80&w=500", // Sugestão de imagem para uma cesta bem farta
+    imagem: "/sonhos.png",
     itens: [
       "Caixa Decorativa",
       "Cartinha Personalizada",
@@ -49,8 +47,7 @@ export const cestas = [
     id: 3,
     nome: "Café Light",
     preco: "150,00",
-    imagem:
-      "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?q=80&w=500", // Imagem sugerida com frutas e visual leve
+    imagem: "/ligth.png", // Imagem sugerida com frutas e visual leve
     itens: [
       "Água de Coco",
       "Suco Natural (Sem Açúcar)",
