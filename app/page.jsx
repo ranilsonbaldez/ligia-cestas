@@ -43,7 +43,7 @@ export default function Home() {
   const handleWhatsApp = () => {
     if (!cestaSelecionada) return;
 
-    const msg = `*Pedido: ${cestaSelecionada.nome}*%0A*De:* ${form.nome}%0A*Para:* ${form.destinatario}%0A*Data:* ${form.data} às ${form.horario}%0A*Endereço:* ${form.endereco}%0A*Pagamento:* ${form.metodoPgto}`;
+    const msg = `*Pedido: ${cestaSelecionada.nome}*%0A*De:* ${form.nome}%0A*Para:* ${form.destinatario}%0A*Data:* ${form.data} às ${form.horario}%0A*Endereço para entrega:* ${form.endereco}%0A*Pagamento:* ${form.metodoPgto}`;
     window.open(`https://wa.me/5598992274652?text=${msg}`, "_blank");
   };
 
@@ -230,28 +230,39 @@ export default function Home() {
                       </div>
                     </div>
 
-                    {/* Bloco 2: Logística (Data e Hora) */}
-                    <div className="space-y-4">
-                      <p className="text-xs font-bold uppercase text-gray-500 tracking-wider">
-                        Quando devemos entregar?
-                      </p>
-                      <div className="grid grid-cols-2 gap-4">
-                        <input
-                          type="date"
-                          required
-                          className="border-2 border-accent/10 p-4 rounded-xl text-base text-gray-800 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition"
-                          onChange={(e) =>
-                            setForm({ ...form, data: e.target.value })
-                          }
-                        />
-                        <input
-                          type="time"
-                          required
-                          className="border-2 border-accent/10 p-4 rounded-xl text-base text-gray-800 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition"
-                          onChange={(e) =>
-                            setForm({ ...form, horario: e.target.value })
-                          }
-                        />
+                    {/* Container dos campos de Data e Hora */}
+                    <div className="space-y-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Quando devemos entregar?{" "}
+                        <span className="text-red-500">*</span>
+                      </label>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        {/* Campo de Data */}
+                        <div className="relative">
+                          <input
+                            type="date"
+                            className="w-full h-12 px-4 rounded-xl border border-accent/20 bg-white text-sm focus:outline-none focus:border-primary text-gray-600"
+                            required
+                          />
+                        </div>
+
+                        {/* Campo de Hora - Formato Nativo */}
+                        <div className="relative">
+                          <input
+                            type="time"
+                            className="w-full h-12 px-4 rounded-xl border border-accent/20 bg-white text-sm focus:outline-none focus:border-primary text-gray-600"
+                            required
+                          />
+                          {/* Estilização para simular placeholder em navegadores que suportam */}
+                          <style jsx>{`
+                            input[type="time"]:inline-block:before {
+                              content: "Hora";
+                              margin-right: 0.5em;
+                              color: #9ca3af;
+                            }
+                          `}</style>
+                        </div>
                       </div>
                     </div>
 
