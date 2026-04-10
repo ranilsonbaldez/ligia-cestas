@@ -1,16 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { cestas } from "./cestas";
-
-const ADICIONAIS = [
-  { id: "ferrero", nome: "Ferreiro Rocher 3unid", preco: 8.0 },
-  { id: "suco", nome: "Suco natural 300ml", preco: 7.0 },
-  { id: "croissant", nome: "Croissant", preco: 8.0 },
-  { id: "barra", nome: "Barra de chocolate", preco: 12.0 },
-  { id: "choc_quente", nome: "Chocolate quente 300ml", preco: 9.9 },
-  { id: "pao_queijo", nome: "Pão de queijo 60g", preco: 8.0 },
-];
+import { cestas, ADICIONAIS } from "./cestas";
 
 export default function Home() {
   const [modalAberto, setModalAberto] = useState(false);

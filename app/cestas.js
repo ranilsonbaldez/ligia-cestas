@@ -1,7 +1,7 @@
 export const cestas = [
   {
     id: 1,
-    nome: "Café Bom dia com Amor",
+    nome: "Café Bom Dia com Amor",
     preco: "80,00",
     imagem: "/bom-dia.png",
     itens: [
@@ -65,13 +65,11 @@ export const cestas = [
   },
 ];
 
-{
-  /* ADICIONAIS 
-
-Ferreiro Rocher  3 un  8,00
-Suco natural 300ml 7,00
-Croissant   8,00
-Barra de chocolate  12,00
-Chocolate quente 300ml 9,90 
-Pão de queijo 60g  8,00 */
-}
+export const ADICIONAIS = [
+  { id: "ferrero", nome: "Ferreiro Rocher 3 unid", preco: 8.0 },
+  { id: "suco", nome: "Suco natural 300ml", preco: 7.0 },
+  { id: "croissant", nome: "Croissant", preco: 8.0 },
+  { id: "barra", nome: "Barra de chocolate", preco: 12.0 },
+  { id: "choc_quente", nome: "Chocolate quente 300ml", preco: 9.9 },
+  { id: "pao_queijo", nome: "Pão de queijo 60g", preco: 8.0 },
+];
