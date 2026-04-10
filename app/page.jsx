@@ -3,11 +3,22 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { cestas } from "./cestas";
 
+const ADICIONAIS = [
+  { id: "ferrero", nome: "Ferreiro Rocher 3unid", preco: 8.0 },
+  { id: "suco", nome: "Suco natural 300ml", preco: 7.0 },
+  { id: "croissant", nome: "Croissant", preco: 8.0 },
+  { id: "barra", nome: "Barra de chocolate", preco: 12.0 },
+  { id: "choc_quente", nome: "Chocolate quente 300ml", preco: 9.9 },
+  { id: "pao_queijo", nome: "Pão de queijo 60g", preco: 8.0 },
+];
+
 export default function Home() {
   const [modalAberto, setModalAberto] = useState(false);
   const [etapa, setEtapa] = useState(1);
   const [cestaSelecionada, setCestaSelecionada] = useState(null);
   const [mesmoDestinatario, setMesmoDestinatario] = useState(false);
+  const [cardExpandido, setCardExpandido] = useState(null); // Armazena o ID da cesta aberta
+  const [adicionaisSelecionados, setAdicionaisSelecionados] = useState([]);
 
   const [form, setForm] = useState({
     nome: "",
@@ -32,6 +43,10 @@ export default function Home() {
   }, [modalAberto]);
 
   const abrirFormulario = (cesta) => {
+    // Se o usuário clicar em "Quero essa" em uma cesta diferente da que ele estava marcando adicionais
+    if (cestaSelecionada?.id !== cesta.id) {
+      setAdicionaisSelecionados([]); // Reseta para não cobrar adicionais da cesta errada
+    }
     setCestaSelecionada(cesta);
     setEtapa(1);
     setModalAberto(true);
@@ -44,7 +59,6 @@ export default function Home() {
   const handleWhatsApp = () => {
     if (!cestaSelecionada) return;
 
-    // Lógica para definir o texto do destinatário
     const textoDestinatario = mesmoDestinatario
       ? "Eu mesmo irei receber"
       : form.destinatario;
@@ -52,17 +66,36 @@ export default function Home() {
     const formatarDataBR = (dataEntrada) => {
       if (!dataEntrada) return "Não informada";
       const [ano, mes, dia] = dataEntrada.split("-");
-      return `${dia}/${mes}/${ano.slice(-2)}`; // O slice(-2) pega apenas os últimos 2 dígitos do ano
+      return `${dia}/${mes}/${ano.slice(-2)}`;
     };
 
     const dataFinal = formatarDataBR(form.data);
 
+    // Cálculo do valor dinâmico
+    const valorCesta = parseFloat(cestaSelecionada.preco.replace(",", "."));
+    const valorAdicionais = adicionaisSelecionados.reduce(
+      (acc, item) => acc + item.preco,
+      0,
+    );
+    const precoTotalCalculado = (valorCesta + valorAdicionais)
+      .toFixed(2)
+      .replace(".", ",");
+
+    // Lista de adicionais para a mensagem (opcional, mas ajuda muito o técnico)
+    const txtAdicionais =
+      adicionaisSelecionados.length > 0
+        ? `%0A*Adicionais:* ${adicionaisSelecionados.map((i) => i.nome).join(", ")}.`
+        : "";
+
+    // Montagem da mensagem com o valor antes do pagamento
     const msg =
-      `*Pedido: ${cestaSelecionada.nome}*%0A` +
+      `Olá! Me chamo *${form.nome}*, e escolhi esta cesta para um momento especial.%0A%0A` +
+      `*Pedido: ${cestaSelecionada.nome}*${txtAdicionais}%0A` +
       `*De:* ${form.nome}%0A` +
       `*Para:* ${textoDestinatario}%0A` +
       `*Data:* ${dataFinal} às ${form.horario}%0A` +
-      `*Endereço para entrega:* ${form.endereco}%0A` +
+      `*Endereço da entrega:* ${form.endereco}%0A` +
+      `*Total:* R$ ${precoTotalCalculado}%0A` + // Valor dinâmico aqui
       `*Pagamento:* ${form.metodoPgto}`;
 
     window.open(`https://wa.me/5598992274652?text=${msg}`, "_blank");
@@ -130,31 +163,105 @@ export default function Home() {
               </div>
 
               {/* Container de conteúdo - Padding Reduzido */}
-              <div className="p-5 flex-grow flex flex-col">
-                {/* CORREÇÃO 3: Preço e Título mais compactos */}
+              <div className="p-5 flex-grow flex-col flex">
+                {/* PREÇO DINÂMICO: Soma o valor da cesta + adicionais marcados */}
                 <div className="text-center mb-4">
                   <span className="text-2xl font-bold text-primary">
-                    R$ {cesta.preco}
+                    R${" "}
+                    {(() => {
+                      const valorBase = parseFloat(
+                        cesta.preco.replace(",", "."),
+                      );
+                      // Somente soma se os adicionais selecionados forem desta cesta específica
+                      const extras =
+                        cestaSelecionada?.id === cesta.id
+                          ? adicionaisSelecionados.reduce(
+                              (acc, i) => acc + i.preco,
+                              0,
+                            )
+                          : 0;
+                      return (valorBase + extras).toFixed(2).replace(".", ",");
+                    })()}
                   </span>
                 </div>
 
-                {/* CORREÇÃO 4: Lista Slim - Fonte 'xs', espaçamento 'space-y-1.5' */}
-                <ul className="space-y-1.5 mb-6 flex-grow border-t border-accent/5 pt-3">
+                {/* LISTA DE ITENS DA CESTA */}
+                <ul className="space-y-1.5 mb-4 flex-grow border-t pt-3">
                   {cesta.itens.map((item, i) => (
                     <li
                       key={i}
-                      className="text-gray-600 text-xs flex items-center gap-2 leading-tight"
+                      className="text-gray-600 text-xs flex items-center gap-2"
                     >
                       <span className="text-accent text-[9px]">❤</span> {item}
                     </li>
                   ))}
                 </ul>
 
-                {/* Botão Slim - 'py-3' e fonte 'xs' */}
+                {/* BOTÃO EXPANSÍVEL DE ADICIONAIS */}
+                <div className="mb-4">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setCardExpandido(
+                        cardExpandido === cesta.id ? null : cesta.id,
+                      )
+                    }
+                    className="text-[10px] font-bold text-primary uppercase flex items-center gap-1 hover:underline"
+                  >
+                    {cardExpandido === cesta.id
+                      ? "− Fechar Adicionais"
+                      : "+ Adicionais (Opcional)"}
+                  </button>
+
+                  {cardExpandido === cesta.id && (
+                    <div className="mt-3 space-y-2 bg-gray-50 p-3 rounded-xl border border-dashed border-accent/30 animate-in fade-in slide-in-from-top-1">
+                      {ADICIONAIS.map((item) => (
+                        <label
+                          key={item.id}
+                          className="flex items-center justify-between cursor-pointer group"
+                        >
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="checkbox"
+                              className="w-3.5 h-3.5 accent-primary"
+                              checked={
+                                !!adicionaisSelecionados.find(
+                                  (i) => i.id === item.id,
+                                )
+                              }
+                              onChange={(e) => {
+                                // Garante que ao marcar um adicional, a "cestaSelecionada" seja esta
+                                setCestaSelecionada(cesta);
+                                if (e.target.checked) {
+                                  setAdicionaisSelecionados([
+                                    ...adicionaisSelecionados,
+                                    item,
+                                  ]);
+                                } else {
+                                  setAdicionaisSelecionados(
+                                    adicionaisSelecionados.filter(
+                                      (i) => i.id !== item.id,
+                                    ),
+                                  );
+                                }
+                              }}
+                            />
+                            <span className="text-[11px] text-gray-600">
+                              {item.nome}
+                            </span>
+                          </div>
+                          <span className="text-[10px] font-bold text-primary/60">
+                            + R$ {item.preco.toFixed(2).replace(".", ",")}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
                 <button
-                  type="button"
                   onClick={() => abrirFormulario(cesta)}
-                  className="w-full bg-secondary text-primary font-bold py-3.5 rounded-xl active:scale-95 transition-all shadow-lg uppercase tracking-widest text-xs cursor-pointer touch-manipulation"
+                  className="w-full bg-secondary text-primary font-bold py-3.5 rounded-xl uppercase tracking-widest text-xs shadow-md hover:brightness-95 transition-all"
                 >
                   Quero Essa
                 </button>
