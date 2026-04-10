@@ -98,7 +98,7 @@ export default function Home() {
       `*Total:* R$ ${precoTotalCalculado}%0A` + // Valor dinâmico aqui
       `*Pagamento:* ${form.metodoPgto}`;
 
-    window.open(`https://wa.me/5598992274652?text=${msg}`, "_blank");
+    window.open(`https://wa.me/5598984881768?text=${msg}`, "_blank");
   };
 
   // Calcula o dia de amanhã
@@ -517,10 +517,10 @@ export default function Home() {
                     {form.metodoPgto === "Pix" && (
                       <div className="bg-gray-50 p-5 rounded-2xl text-center border-2 border-dashed border-accent/20 space-y-2">
                         <p className="text-xs font-bold text-gray-500 uppercase">
-                          Chave Pix (Celular)
+                          Chave Pix (CPF)
                         </p>
                         <p className="text-xl font-mono font-bold text-primary tracking-tight">
-                          98988887777
+                          05378768390
                         </p>
                         <button
                           type="button"
