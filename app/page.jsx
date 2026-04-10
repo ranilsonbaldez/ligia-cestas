@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { cestas, ADICIONAIS } from "./cestas";
 
 export default function Home() {
@@ -105,22 +106,21 @@ export default function Home() {
 
   return (
     <main className="min-h-screen flex flex-col bg-soft">
-      <header className="w-full bg-primary py-6 px-4 border-b-2 border-secondary shadow-xl">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-3xl md:text-5xl font-serif font-bold text-secondary tracking-widest">
-            Lígia Cestas & Presentes
-          </h1>
-
-          <p className="mt-2 text-accent italic text-base md:text-xl font-light tracking-wide">
-            Momentos Inesquecíveis pra você
-          </p>
-
-          {/* O divisor ficou mais delicado para acompanhar o estilo slim */}
-          <div className="mt-4 flex justify-center items-center gap-3">
-            <div className="h-[1px] w-12 bg-secondary/30"></div>
-            <span className="text-secondary text-[10px]">✦</span>
-            <div className="h-[1px] w-12 bg-secondary/30"></div>
-          </div>
+      <header className="w-full bg-[#630d16] py-6 px-4 border-b border-[#D4AF37]/20 shadow-xl z-50">
+        <div className="max-w-6xl mx-auto flex items-center justify-center">
+          <Link
+            href="/"
+            className="transition-transform hover:scale-[1.02] active:scale-[0.98]"
+          >
+            <Image
+              src="/logo-ligia.svg" // Certifique-se que o arquivo está na pasta /public
+              alt="Lígia Cestas & Presentes"
+              width={260}
+              height={70}
+              priority
+              className="object-contain w-[160px] md:w-[220px] lg:w-[280px]"
+            />
+          </Link>
         </div>
       </header>
 
