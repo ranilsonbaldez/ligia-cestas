@@ -56,6 +56,12 @@ export default function Home() {
     setModalAberto(false);
   };
 
+  const copiarPix = () => {
+    const chave = "05378768390";
+    navigator.clipboard.writeText(chave);
+    alert("Chave Pix copiada com sucesso!"); // Feedback simples
+  };
+
   const handleWhatsApp = () => {
     if (!cestaSelecionada) return;
 
@@ -524,7 +530,8 @@ export default function Home() {
                         </p>
                         <button
                           type="button"
-                          className="text-xs text-blue-600 font-bold underline"
+                          onClick={copiarPix} // A mágica acontece aqui
+                          className="text-xs text-blue-600 font-bold underline active:text-blue-800"
                         >
                           Copiar Chave
                         </button>
@@ -533,9 +540,9 @@ export default function Home() {
                     {form.metodoPgto === "Cartão" && (
                       <div className="bg-rose-50 p-5 rounded-2xl text-sm text-rose-950 border border-rose-200">
                         ⚠ Taxas da maquininha: 2% Débito | 5% Crédito.
-                        <p className="mt-2 font-bold underline cursor-pointer">
+                        {/* <p className="mt-2 font-bold underline cursor-pointer">
                           Acessar Link de Pagamento
-                        </p>
+                        </p> */}
                       </div>
                     )}
 
