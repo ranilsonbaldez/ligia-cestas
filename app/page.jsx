@@ -546,6 +546,10 @@ export default function Home() {
                       </div>
                     )}
 
+                    <p className="text-xs text-red-600 uppercase text-center w-full">
+                      * Taxa de entrega a consultar.
+                    </p>
+
                     {/* Botão Final: Verde Acolhedor */}
                     <button
                       type="button"
