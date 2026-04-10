@@ -7,6 +7,7 @@ export default function Home() {
   const [modalAberto, setModalAberto] = useState(false);
   const [etapa, setEtapa] = useState(1);
   const [cestaSelecionada, setCestaSelecionada] = useState(null);
+  const [mesmoDestinatario, setMesmoDestinatario] = useState(false);
 
   const [form, setForm] = useState({
     nome: "",
@@ -43,9 +44,34 @@ export default function Home() {
   const handleWhatsApp = () => {
     if (!cestaSelecionada) return;
 
-    const msg = `*Pedido: ${cestaSelecionada.nome}*%0A*De:* ${form.nome}%0A*Para:* ${form.destinatario}%0A*Data:* ${form.data} às ${form.horario}%0A*Endereço para entrega:* ${form.endereco}%0A*Pagamento:* ${form.metodoPgto}`;
+    // Lógica para definir o texto do destinatário
+    const textoDestinatario = mesmoDestinatario
+      ? "Eu mesmo irei receber"
+      : form.destinatario;
+
+    const formatarDataBR = (dataEntrada) => {
+      if (!dataEntrada) return "Não informada";
+      const [ano, mes, dia] = dataEntrada.split("-");
+      return `${dia}/${mes}/${ano.slice(-2)}`; // O slice(-2) pega apenas os últimos 2 dígitos do ano
+    };
+
+    const dataFinal = formatarDataBR(form.data);
+
+    const msg =
+      `*Pedido: ${cestaSelecionada.nome}*%0A` +
+      `*De:* ${form.nome}%0A` +
+      `*Para:* ${textoDestinatario}%0A` +
+      `*Data:* ${dataFinal} às ${form.horario}%0A` +
+      `*Endereço para entrega:* ${form.endereco}%0A` +
+      `*Pagamento:* ${form.metodoPgto}`;
+
     window.open(`https://wa.me/5598992274652?text=${msg}`, "_blank");
   };
+
+  // Calcula o dia de amanhã
+  const amanha = new Date();
+  amanha.setDate(amanha.getDate() + 1);
+  const dataMinima = amanha.toISOString().split("T")[0];
 
   return (
     <main className="min-h-screen bg-soft pb-10">
@@ -84,7 +110,7 @@ export default function Home() {
             >
               {/* Cabeçalho do Card - Slim */}
               <div className="bg-primary p-3 text-center border-b-2 border-secondary/30">
-                <h3 className="text-lg font-serif font-bold text-secondary uppercase tracking-tighter leading-tight truncate">
+                <h3 className="text-lg font-serif font-bold text-secondary tracking-tighter leading-tight truncate">
                   {cesta.nome}
                 </h3>
               </div>
@@ -92,7 +118,7 @@ export default function Home() {
               {/* CORREÇÃO 2: 'h-48' em vez de 'h-64' para reduzir a imagem */}
               <div
                 className="relative w-full border-b border-accent/10 overflow-hidden"
-                style={{ aspectRatio: "1200 / 896" }}
+                style={{ aspectRatio: "1200 / 750" }}
               >
                 <Image
                   src={cesta.imagem}
@@ -188,7 +214,8 @@ export default function Home() {
                     }}
                   >
                     {/* Bloco 1: Identificação (Quem Pede e Recebe) */}
-                    <div className="space-y-4">
+                    <div className="space-y-6">
+                      {/* Campo: Quem está pedindo */}
                       <div className="relative group">
                         <input
                           type="text"
@@ -196,9 +223,18 @@ export default function Home() {
                           className="peer w-full border-b-2 border-accent/20 bg-transparent p-4 pl-0 text-base text-gray-800 placeholder-transparent focus:border-primary focus:outline-none transition-colors"
                           placeholder="Seu Nome"
                           id="nomePede"
-                          onChange={(e) =>
-                            setForm({ ...form, nome: e.target.value })
-                          }
+                          value={form.nome}
+                          onChange={(e) => {
+                            const novoNome = e.target.value;
+                            setForm({
+                              ...form,
+                              nome: novoNome,
+                              // Se o checkbox estiver marcado, atualiza o destinatário junto
+                              destinatario: mesmoDestinatario
+                                ? novoNome
+                                : form.destinatario,
+                            });
+                          }}
                         />
                         <label
                           htmlFor="nomePede"
@@ -207,15 +243,45 @@ export default function Home() {
                           Quem está pedindo?{" "}
                           <span className="text-primary/70">*</span>
                         </label>
+
+                        {/* Checkbox de Auto-entrega */}
+                        <div className="flex items-center gap-2 mt-2 ml-1">
+                          <input
+                            type="checkbox"
+                            id="mesmoDestinatario"
+                            className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary accent-primary cursor-pointer"
+                            checked={mesmoDestinatario}
+                            onChange={(e) => {
+                              const marcado = e.target.checked;
+                              setMesmoDestinatario(marcado);
+                              if (marcado) {
+                                setForm({ ...form, destinatario: form.nome });
+                              }
+                            }}
+                          />
+                          <label
+                            htmlFor="mesmoDestinatario"
+                            className="text-xs text-gray-500 cursor-pointer select-none"
+                          >
+                            Eu mesmo irei receber
+                          </label>
+                        </div>
                       </div>
 
-                      <div className="relative group">
+                      {/* Campo: Quem vai receber */}
+                      <div
+                        className={`relative group transition-opacity ${mesmoDestinatario ? "opacity-50" : "opacity-100"}`}
+                      >
                         <input
                           type="text"
-                          required
-                          className="peer w-full border-b-2 border-accent/20 bg-transparent p-4 pl-0 text-base text-gray-800 placeholder-transparent focus:border-primary focus:outline-none transition-colors"
+                          required={!mesmoDestinatario}
+                          disabled={mesmoDestinatario}
+                          className="peer w-full border-b-2 border-accent/20 bg-transparent p-4 pl-0 text-base text-gray-800 placeholder-transparent focus:border-primary focus:outline-none transition-colors disabled:cursor-not-allowed"
                           placeholder="Nome de quem recebe"
                           id="nomeRecebe"
+                          value={
+                            mesmoDestinatario ? form.nome : form.destinatario
+                          }
                           onChange={(e) =>
                             setForm({ ...form, destinatario: e.target.value })
                           }
@@ -224,7 +290,9 @@ export default function Home() {
                           htmlFor="nomeRecebe"
                           className="absolute left-0 -top-3 text-sm text-primary group-focus-within:text-xs group-focus-within:-top-5 group-focus-within:text-gray-500 transition-all cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-placeholder-shown:text-gray-400"
                         >
-                          Quem vai receber?{" "}
+                          {mesmoDestinatario
+                            ? "Destinatário igual ao remetente"
+                            : "Quem vai receber?"}{" "}
                           <span className="text-primary/70">*</span>
                         </label>
                       </div>
@@ -244,6 +312,11 @@ export default function Home() {
                             type="date"
                             className="w-full h-12 px-4 rounded-xl border border-accent/20 bg-white text-sm focus:outline-none focus:border-primary text-gray-600"
                             required
+                            min={dataMinima}
+                            value={form.data || ""}
+                            onChange={(e) =>
+                              setForm({ ...form, data: e.target.value })
+                            }
                           />
                         </div>
 
@@ -253,8 +326,11 @@ export default function Home() {
                             type="time"
                             className="w-full h-12 px-4 rounded-xl border border-accent/20 bg-white text-sm focus:outline-none focus:border-primary text-gray-600"
                             required
+                            value={form.horario || ""}
+                            onChange={(e) =>
+                              setForm({ ...form, horario: e.target.value })
+                            }
                           />
-                          {/* Estilização para simular placeholder em navegadores que suportam */}
                           <style jsx>{`
                             input[type="time"]:inline-block:before {
                               content: "Hora";
