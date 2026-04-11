@@ -106,27 +106,32 @@ export default function Home() {
 
   return (
     <main className="min-h-screen flex flex-col bg-soft">
-      <header className="w-full bg-[#630d16] py-6 px-4 border-b border-[#D4AF37]/20 shadow-xl z-50">
-        <div className="max-w-6xl mx-auto flex items-center justify-center">
+      <header className="w-full bg-[#630d16] h-20 md:h-28 flex items-center justify-center border-b border-[#D4AF37]/20 shadow-xl">
+        {/* h-20 fixa a altura no mobile, h-28 no desktop */}
+
+        <div className="max-w-7xl mx-auto px-4 w-full flex justify-center">
           <Link
             href="/"
             className="transition-transform hover:scale-[1.02] active:scale-[0.98]"
           >
             <Image
-              src="/logo-ligia.svg" // Certifique-se que o arquivo está na pasta /public
+              src="/logo-ligia.svg"
               alt="Lígia Cestas & Presentes"
-              width={260}
-              height={70}
+              width={500}
+              height={150}
               priority
-              className="object-contain w-[160px] md:w-[220px] lg:w-[280px]"
+              // h-16 e md:h-20 limitam a altura da imagem para ela não esticar o header
+              className="object-contain w-auto h-16 md:h-20"
             />
           </Link>
         </div>
       </header>
 
       {/* --- Grid de Cestas Atualizado (Slim) --- */}
-      <section className="max-w-7xl mx-auto py-10 px-4">
-        <h2 className="text-2xl font-serif text-primary text-center mb-8 uppercase tracking-[0.2em] leading-none">
+      {/* Reduzi o pt da section para o mínimo (pt-2) */}
+      <section className="max-w-7xl mx-auto px-4 pt-2 pb-10">
+        {/* Removido todos os paddings do h2 e usado apenas my (margin vertical) */}
+        <h2 className="text-lg md:text-xl font-serif text-primary text-center uppercase tracking-[0.1em] leading-none my-6">
           Nossos Cardápios
         </h2>
 
