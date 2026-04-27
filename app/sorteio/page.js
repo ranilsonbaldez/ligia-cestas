@@ -8,6 +8,8 @@ export default function RifaPage() {
   const [selectedNumbers, setSelectedNumbers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [occupiedNumbers, setOccupiedNumbers] = useState([]); // Aqui virão os dados do Supabase
+  const [showCheckout, setShowCheckout] = useState(false);
+  const [dadosCompra, setDadosCompra] = useState(null);
 
   const totalNumbers = 150;
   const pricePerNumber = 5;
@@ -61,11 +63,22 @@ export default function RifaPage() {
       const { error } = await supabase.from("rifas").insert(updates);
       if (error) throw error;
 
-      const listaNumeros = selectedNumbers.sort((a, b) => a - b).join(", ");
-      const mensagem = `Olá, sou ${comprador.nome}, estou participando do sorteio da cesta de café do dia das mães e adquiri o(s) número(s): ${listaNumeros}.`;
-      const whatsappUrl = `https://wa.me/5598992274652?text=${encodeURIComponent(mensagem)}`;
+      // --- ALTERAÇÃO AQUI: EM VEZ DE REDIRECIONAR, PREPARAMOS O CHECKOUT ---
 
-      window.location.href = whatsappUrl;
+      setDadosCompra({
+        nome: comprador.nome,
+        numeros: [...selectedNumbers].sort((a, b) => a - b), // Mantém a lista ordenada
+        total: totalPrice,
+        // Este é o seu código PIX "Copia e Cola" (Chave Celular Ligia Mourão)
+        pixCopiaECola:
+          "00020101021126330014br.gov.bcb.pix0111053787683905204000053039865802BR5914LIGIA M BALDEZ6008SAO LUIS62070503***63047CD3",
+      });
+
+      setIsModalOpen(false); // Fecha o modal de formulário
+      setShowCheckout(true); // Abre a tela com o resumo e PIX
+
+      // Opcional: Limpa os números selecionados para evitar duplicidade visual
+      // setSelectedNumbers([]);
     } catch (error) {
       alert("Erro ao reservar números. Tente novamente.");
       console.error(error);
@@ -330,6 +343,120 @@ export default function RifaPage() {
           </div>
         </div>
       </footer>
+      {/* TELA DE CHECKOUT / PIX */}
+      {showCheckout && dadosCompra && (
+        <div className="fixed inset-0 bg-white z-[100] flex flex-col animate-in fade-in duration-300">
+          <header className="w-full bg-[#630d16] h-20 flex items-center justify-center shadow-md">
+            <Image
+              src="/logo-ligia.svg"
+              alt="Logo"
+              width={150}
+              height={45}
+              className="h-10 w-auto"
+            />
+          </header>
+
+          <main className="flex-1 max-w-md mx-auto w-full p-6 flex flex-col items-center">
+            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-4">
+              <svg
+                className="w-10 h-10 text-green-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="3"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+
+            <h2 className="text-xl font-bold text-gray-800 text-center mb-1">
+              Reserva Confirmada!
+            </h2>
+            <p className="text-gray-500 text-sm text-center mb-6">
+              Siga os passos abaixo para concluir seu pagamento.
+            </p>
+
+            {/* Resumo Card */}
+            <div className="w-full bg-gray-50 rounded-2xl p-5 border border-gray-100 mb-6">
+              <div className="flex justify-between mb-2">
+                <span className="text-gray-400 text-xs uppercase font-bold">
+                  Cliente
+                </span>
+                <span className="text-gray-800 text-xs font-bold">
+                  {dadosCompra.nome}
+                </span>
+              </div>
+              <div className="flex justify-between mb-2">
+                <span className="text-gray-400 text-xs uppercase font-bold">
+                  Números
+                </span>
+                <span className="text-[#630d16] text-xs font-bold">
+                  {dadosCompra.numeros.join(", ")}
+                </span>
+              </div>
+              <div className="flex justify-between pt-2 border-t border-gray-200">
+                <span className="text-gray-800 font-bold">Total a pagar</span>
+                <span className="text-green-700 font-bold text-lg font-mono">
+                  R$ {dadosCompra.total.toFixed(2)}
+                </span>
+              </div>
+            </div>
+
+            {/* Pix Copy/Paste */}
+            <div className="w-full text-center space-y-3 mb-8">
+              <p className="text-xs font-bold text-gray-600 uppercase tracking-widest">
+                Pix Copia e Cola
+              </p>
+              <div className="bg-gray-100 p-4 rounded-xl border-2 border-dashed border-gray-300 relative">
+                <p className="text-[10px] font-mono break-all text-gray-500 mb-4 px-2">
+                  {dadosCompra.pixCopiaECola}
+                </p>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(dadosCompra.pixCopiaECola);
+                    alert("Código PIX Copiado!");
+                  }}
+                  className="bg-[#630d16] text-white text-[10px] px-6 py-2 rounded-full font-bold uppercase tracking-tighter hover:bg-[#80121c] active:scale-95 transition-all"
+                >
+                  Copiar Código
+                </button>
+              </div>
+            </div>
+
+            {/* Botão WhatsApp */}
+            <button
+              onClick={() => {
+                const valorFormatado = totalPrice.toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                });
+                const msg = `Olá! Sou ${dadosCompra.nome}. Fiz a reserva do(s) número(s) [${dadosCompra.numeros.join(", ")}]. Segue o comprovante de ${valorFormatado}.`;
+                window.open(
+                  `https://wa.me/5598992274652?text=${encodeURIComponent(msg)}`,
+                  "_blank",
+                );
+              }}
+              className="w-full bg-[#25D366] text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-3 shadow-lg hover:bg-[#20ba5a] transition-all"
+            >
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.888 11.887-11.888 3.176 0 6.161 1.237 8.406 3.484 2.246 2.248 3.482 5.231 3.482 8.405 0 6.556-5.332 11.888-11.888 11.888-2.011 0-3.987-.51-5.742-1.474l-6.244 1.638zm6.26-4.135c1.611.956 3.197 1.441 4.95 1.441 5.482 0 9.942-4.46 9.942-9.94 0-2.652-1.033-5.147-2.908-7.023-1.875-1.876-4.37-2.909-7.024-2.909-5.482 0-9.94 4.459-9.94 9.941 0 1.942.536 3.754 1.55 5.352l-1.026 3.748 3.856-1.01z" />
+              </svg>
+              <span>NOTIFICAR VIA WHATSAPP</span>
+            </button>
+
+            <button
+              onClick={() => window.location.reload()}
+              className="mt-6 text-gray-400 text-[10px] font-bold uppercase hover:text-gray-600"
+            >
+              Voltar ao Início
+            </button>
+          </main>
+        </div>
+      )}
     </div>
   );
 }
