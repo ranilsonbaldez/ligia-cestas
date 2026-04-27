@@ -134,7 +134,7 @@ export default function Home() {
             Sorteio Especial Dia das Mães
           </h2>
           <p className="text-gray-500 text-sm mb-6">
-            Garanta seu número da sorte e concorra a uma cesta premium.
+            Garanta seu número da sorte e concorra a uma Cesta Premium.
           </p>
 
           <Link

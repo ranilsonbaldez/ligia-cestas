@@ -41,11 +41,21 @@ export default function AdminGestao() {
 
   // 3. Funções de banco
   async function atualizarStatus(id, novoStatus) {
-    const { error } = await supabase
+    console.log("Tentando atualizar ID:", id, "para:", novoStatus); // Verifique se o ID aparece no F12
+
+    const { data, error } = await supabase
       .from("rifas")
       .update({ status: novoStatus })
-      .eq("id", id);
-    if (!error) fetchReservas();
+      .eq("id", id)
+      .select(); // O select ajuda a confirmar se houve alteração
+
+    if (error) {
+      console.error("Erro detalhado do Supabase:", error);
+      alert(`Erro: ${error.message}`);
+    } else {
+      console.log("Sucesso! Dados retornados:", data);
+      fetchReservas();
+    }
   }
 
   async function excluirReserva(id) {
@@ -139,7 +149,7 @@ export default function AdminGestao() {
               <th className="px-3 py-2">Comprador</th>
               <th className="px-3 py-2">Presenteado</th>
               <th className="px-3 py-2">WhatsApp</th>
-              <th className="px-3 py-2">Endereço</th>
+              {/* <th className="px-3 py-2">Endereço</th> */}
               <th className="px-3 py-2 text-center">Status</th>
               <th className="px-3 py-2 text-right">Ações</th>
             </tr>
@@ -168,12 +178,12 @@ export default function AdminGestao() {
                     {item.telefone}
                   </a>
                 </td>
-                <td
+                {/* <td
                   className="px-3 py-1 text-[10px] text-gray-400 truncate max-w-[200px]"
                   title={item.endereco}
                 >
                   {item.endereco}
-                </td>
+                </td> */}
                 <td className="px-3 py-1 text-center">
                   <span
                     className={`px-2 py-0.5 rounded text-[9px] font-bold ${

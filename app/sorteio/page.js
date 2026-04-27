@@ -107,6 +107,20 @@ export default function RifaPage() {
         <p className="text-center text-gray-600 mb-8">
           Escolha seus números e concorra a uma Cesta Premium!
         </p>
+        <p className="text-center text-gray-700 font-medium mb-8">
+          Sorteio dia{" "}
+          <span className="font-bold text-[#630d16]">08/05/2026</span> às{" "}
+          <span className="font-bold text-[#630d16]">19h</span> pelo nosso
+          <a
+            href="https://www.instagram.com/ligiacestasepresentes"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-1 text-[#E1306C] hover:text-[#bc2a8d] font-bold underline decoration-2 underline-offset-4 transition-colors"
+          >
+            Instagram
+          </a>
+          .
+        </p>
 
         <div className="flex justify-center gap-4 mb-6 text-xs uppercase font-bold">
           <div className="flex items-center gap-1">
