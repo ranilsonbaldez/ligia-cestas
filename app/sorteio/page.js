@@ -436,7 +436,7 @@ export default function RifaPage() {
                 });
                 const msg = `Olá! Sou ${dadosCompra.nome}. Fiz a reserva do(s) número(s) [${dadosCompra.numeros.join(", ")}]. Segue o comprovante de ${valorFormatado}.`;
                 window.open(
-                  `https://wa.me/5598992274652?text=${encodeURIComponent(msg)}`,
+                  `https://wa.me/5598984881768?text=${encodeURIComponent(msg)}`,
                   "_blank",
                 );
               }}
