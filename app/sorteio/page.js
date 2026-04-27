@@ -89,7 +89,7 @@ export default function RifaPage() {
 
       <main className="max-w-4xl mx-auto px-4 py-8">
         <h1 className="text-2xl font-serif text-[#630d16] text-center uppercase tracking-widest mb-2">
-          Rifa Especial Dia das Mães
+          Sorteio Especial Dia das Mães
         </h1>
         <p className="text-center text-gray-600 mb-8">
           Escolha seus números e concorra a uma Cesta Premium!
@@ -271,6 +271,65 @@ export default function RifaPage() {
           </div>
         </div>
       )}
+      <footer className="w-full bg-primary py-6 px-4 border-t border-secondary/20 shadow-inner mt-auto">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="text-[10px] md:text-xs text-secondary/80 font-medium tracking-widest uppercase text-center md:text-left">
+            São Luís - MA, 2026
+          </div>
+
+          <div className="flex items-center justify-center gap-6">
+            <a
+              href="https://www.instagram.com/ligiacestasepresentes"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-secondary hover:text-accent transition-colors"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+              <span className="text-[11px] font-bold uppercase tracking-tighter">
+                Instagram
+              </span>
+            </a>
+
+            <a
+              href="https://wa.me/5598984881768"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-secondary hover:text-accent transition-colors"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-13.5 8.38 8.38 0 0 1 3.8.9L21 3z"></path>
+              </svg>
+              <span className="text-[11px] font-bold uppercase tracking-tighter">
+                WhatsApp
+              </span>
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

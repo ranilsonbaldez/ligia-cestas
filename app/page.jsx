@@ -127,6 +127,25 @@ export default function Home() {
         </div>
       </header>
 
+      {/* Seção de Chamada para o Sorteio - Minimalista */}
+      <section className="py-10 px-6 border-b border-gray-100 bg-white">
+        <div className="max-w-xl mx-auto text-center">
+          <h2 className="text-[#630d16] text-xl md:text-2xl font-bold mb-2">
+            Sorteio Especial Dia das Mães
+          </h2>
+          <p className="text-gray-500 text-sm mb-6">
+            Garanta seu número da sorte e concorra a uma cesta premium.
+          </p>
+
+          <Link
+            href="/sorteio"
+            className="inline-block bg-[#630d16] text-white font-bold px-10 py-3 rounded-full hover:bg-[#80121c] transition-all shadow-md active:scale-95"
+          >
+            Participar do Sorteio
+          </Link>
+        </div>
+      </section>
+
       {/* --- Grid de Cestas Atualizado (Slim) --- */}
       {/* Reduzi o pt da section para o mínimo (pt-2) */}
       <section className="max-w-7xl mx-auto px-4 pt-2 pb-10">
