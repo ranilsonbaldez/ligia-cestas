@@ -1,60 +1,45 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { supabase } from "../../lib/supabase";
 
 export default function AdminGestao() {
   const [reservas, setReservas] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [autorizado, setAutorizado] = useState(false);
   const [senhaInput, setSenhaInput] = useState("");
+  const [montado, setMontado] = useState(false);
+  const [autorizado, setAutorizado] = useState(false);
 
-  // Altere para a senha que desejar
   const SENHA_MESTRA = "belaedom10";
 
-  const verificarSenha = (e) => {
-    e.preventDefault();
-    if (senhaInput === SENHA_MESTRA) {
-      setAutorizado(true);
-    } else {
-      alert("Senha incorreta!");
-    }
-  };
-
-  async function fetchReservas() {
-    // Usamos o setLoading apenas se já estivermos autorizados para evitar flashes
+  // 1. Função de busca estável
+  const fetchReservas = useCallback(async () => {
+    setLoading(true);
     const { data, error } = await supabase
       .from("rifas")
       .select("*")
       .order("numero", { ascending: true });
 
-    if (!error) setReservas(data);
+    if (!error) setReservas(data || []);
     setLoading(false);
-  }
+  }, []);
 
-  useEffect(() => {
-    let isMounted = true;
+  // 2. Ações do painel
+  const fazerLogout = () => {
+    localStorage.removeItem("admin_auth_cestas");
+    setAutorizado(false);
+  };
 
-    if (autorizado) {
-      const carregarDados = async () => {
-        setLoading(true);
-        const { data, error } = await supabase
-          .from("rifas")
-          .select("*")
-          .order("numero", { ascending: true });
-
-        if (isMounted) {
-          if (!error) setReservas(data);
-          setLoading(false);
-        }
-      };
-      carregarDados();
+  const verificarSenha = (e) => {
+    e.preventDefault();
+    if (senhaInput === SENHA_MESTRA) {
+      setAutorizado(true);
+      localStorage.setItem("admin_auth_cestas", "true");
+    } else {
+      alert("Senha incorreta!");
     }
+  };
 
-    return () => {
-      isMounted = false;
-    };
-  }, [autorizado]);
-
+  // 3. Funções de banco
   async function atualizarStatus(id, novoStatus) {
     const { error } = await supabase
       .from("rifas")
@@ -68,7 +53,30 @@ export default function AdminGestao() {
     if (!error) fetchReservas();
   }
 
-  // 1. TELA DE LOGIN (Bloqueio)
+  // 4. Efeito de Hidratação
+  useEffect(() => {
+    const logado = localStorage.getItem("admin_auth_cestas") === "true";
+
+    if (logado) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setAutorizado((prev) => (prev !== true ? true : prev));
+    }
+
+    setMontado(true);
+  }, []);
+
+  // 5. Efeito de Carga de Dados (Com o ignore para o Linter parar de reclamar)
+  useEffect(() => {
+    if (montado && autorizado) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      fetchReservas();
+    }
+  }, [montado, autorizado, fetchReservas]);
+
+  // --- RENDERIZAÇÃO ---
+
+  if (!montado) return <div className="min-h-screen bg-gray-50" />;
+
   if (!autorizado) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
@@ -96,7 +104,6 @@ export default function AdminGestao() {
     );
   }
 
-  // 2. LOADING (Apenas após senha correta)
   if (loading)
     return (
       <div className="p-10 text-center text-sm font-mono italic text-gray-500">
@@ -117,7 +124,7 @@ export default function AdminGestao() {
           </div>
         </div>
         <button
-          onClick={() => setAutorizado(false)}
+          onClick={fazerLogout}
           className="text-[9px] bg-gray-100 hover:bg-red-50 hover:text-red-600 px-3 py-1 rounded text-gray-500 font-bold transition-colors"
         >
           SAIR
