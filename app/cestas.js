@@ -3,7 +3,7 @@ export const cestas = [
     id: 1,
     nome: "Cesta Carinho e Sabor",
     preco: "185,00",
-    imagem: "/carinho-sabor.png",
+    imagem: "/cesta-mae.png",
     itens: [
       "Mini Bolo",
       "Sanduíche de Queijo e Presunto",
@@ -22,7 +22,7 @@ export const cestas = [
     id: 2,
     nome: "Cesta Premium Família",
     preco: "385,00",
-    imagem: "/premium-familia.png",
+    imagem: "/cesta-mae.png",
     itens: [
       "Mini Bolo",
       "6 Sanduíches de Queijo e Presunto",
