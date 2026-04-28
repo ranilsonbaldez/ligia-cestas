@@ -1,7 +1,7 @@
 export const cestas = [
   {
     id: 1,
-    nome: "Cesta Carinho e Sabor",
+    nome: "Café Mimo de Mãe",
     preco: "185,00",
     imagem: "/cesta-mae.png",
     itens: [
@@ -20,7 +20,7 @@ export const cestas = [
   },
   {
     id: 2,
-    nome: "Cesta Premium Família",
+    nome: "Para Compartilhar",
     preco: "385,00",
     imagem: "/cesta-mae.png",
     itens: [
