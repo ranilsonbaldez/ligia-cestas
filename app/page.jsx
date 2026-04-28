@@ -146,152 +146,158 @@ export default function Home() {
         </div>
       </section>
 
-      {/* --- Grid de Cestas Atualizado (Slim) --- */}
-      {/* Reduzi o pt da section para o mínimo (pt-2) */}
       <section className="max-w-7xl mx-auto px-4 pt-2 pb-10">
-        {/* Removido todos os paddings do h2 e usado apenas my (margin vertical) */}
         <h2 className="text-lg md:text-xl font-serif text-primary text-center uppercase tracking-[0.1em] leading-none my-6">
           Nossos Cardápios
         </h2>
 
-        {/* Ajuste no Grid: Adicionado p-2 e items-start */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-2 items-start">
-          {cestas.map((cesta) => (
-            <div
-              key={cesta.id}
-              /* CORREÇÃO 1: 'max-w-xs' e 'mx-auto' para o card flutuar e centralizar no celular */
-              className="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col border border-accent/15 max-w-xs mx-auto hover:scale-[1.01] transition-transform duration-300 w-full"
-            >
-              {/* Cabeçalho do Card - Slim */}
-              <div className="bg-primary p-3 text-center border-b-2 border-secondary/30">
-                <h3 className="text-lg font-serif font-bold text-secondary tracking-tighter leading-tight truncate">
-                  {cesta.nome}
-                </h3>
-              </div>
-
-              {/* CORREÇÃO 2: 'h-48' em vez de 'h-64' para reduzir a imagem */}
+        <div className="block w-full">
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              gap: "24px",
+              width: "100%",
+            }}
+          >
+            {cestas.map((cesta) => (
               <div
-                className="relative w-full border-b border-accent/10 overflow-hidden"
-                style={{ aspectRatio: "1200 / 750" }}
+                key={cesta.id}
+                className="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col border border-accent/15 hover:scale-[1.01] transition-transform duration-300"
+                style={{ width: "320px", flex: "0 0 320px" }}
               >
-                <Image
-                  src={cesta.imagem}
-                  alt={cesta.nome}
-                  fill
-                  unoptimized
-                  className="object-cover"
-                />
-              </div>
-
-              {/* Container de conteúdo - Padding Reduzido */}
-              <div className="p-5 flex-grow flex-col flex">
-                {/* PREÇO DINÂMICO: Soma o valor da cesta + adicionais marcados */}
-                <div className="text-center mb-4">
-                  <span className="text-2xl font-bold text-primary">
-                    R${" "}
-                    {(() => {
-                      const valorBase = parseFloat(
-                        cesta.preco.replace(",", "."),
-                      );
-                      // Somente soma se os adicionais selecionados forem desta cesta específica
-                      const extras =
-                        cestaSelecionada?.id === cesta.id
-                          ? adicionaisSelecionados.reduce(
-                              (acc, i) => acc + i.preco,
-                              0,
-                            )
-                          : 0;
-                      return (valorBase + extras).toFixed(2).replace(".", ",");
-                    })()}
-                  </span>
+                {/* Cabeçalho do Card - Slim */}
+                <div className="bg-primary p-3 text-center border-b-2 border-secondary/30">
+                  <h3 className="text-lg font-serif font-bold text-secondary tracking-tighter leading-tight truncate">
+                    {cesta.nome}
+                  </h3>
                 </div>
 
-                {/* LISTA DE ITENS DA CESTA */}
-                <ul className="space-y-1.5 mb-4 flex-grow border-t pt-3">
-                  {cesta.itens.map((item, i) => (
-                    <li
-                      key={i}
-                      className="text-gray-600 text-xs flex items-center gap-2"
-                    >
-                      <span className="text-accent text-[9px]">❤</span> {item}
-                    </li>
-                  ))}
-                </ul>
-
-                {/* BOTÃO EXPANSÍVEL DE ADICIONAIS */}
-                <div className="mb-4">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setCardExpandido(
-                        cardExpandido === cesta.id ? null : cesta.id,
-                      )
-                    }
-                    className="text-[10px] font-bold text-primary uppercase flex items-center gap-1 hover:underline"
-                  >
-                    {cardExpandido === cesta.id
-                      ? "− Fechar Adicionais"
-                      : "+ Adicionais (Opcional)"}
-                  </button>
-
-                  {cardExpandido === cesta.id && (
-                    <div className="mt-3 space-y-2 bg-gray-50 p-3 rounded-xl border border-dashed border-accent/30 animate-in fade-in slide-in-from-top-1">
-                      {ADICIONAIS.map((item) => (
-                        <label
-                          key={item.id}
-                          className="flex items-center justify-between cursor-pointer group"
-                        >
-                          <div className="flex items-center gap-2">
-                            <input
-                              type="checkbox"
-                              className="w-3.5 h-3.5 accent-primary"
-                              checked={
-                                !!adicionaisSelecionados.find(
-                                  (i) => i.id === item.id,
-                                )
-                              }
-                              onChange={(e) => {
-                                // Garante que ao marcar um adicional, a "cestaSelecionada" seja esta
-                                setCestaSelecionada(cesta);
-                                if (e.target.checked) {
-                                  setAdicionaisSelecionados([
-                                    ...adicionaisSelecionados,
-                                    item,
-                                  ]);
-                                } else {
-                                  setAdicionaisSelecionados(
-                                    adicionaisSelecionados.filter(
-                                      (i) => i.id !== item.id,
-                                    ),
-                                  );
-                                }
-                              }}
-                            />
-                            <span className="text-[11px] text-gray-600">
-                              {item.nome}
-                            </span>
-                          </div>
-                          <span className="text-[10px] font-bold text-primary/60">
-                            + R$ {item.preco.toFixed(2).replace(".", ",")}
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <button
-                  onClick={() => abrirFormulario(cesta)}
-                  className="w-full bg-secondary text-primary font-bold py-3.5 rounded-xl uppercase tracking-widest text-xs shadow-md hover:brightness-95 transition-all"
+                <div
+                  className="relative w-full border-b border-accent/10 overflow-hidden"
+                  style={{ aspectRatio: "1200 / 750" }}
                 >
-                  Quero Essa
-                </button>
+                  <Image
+                    src={cesta.imagem}
+                    alt={cesta.nome}
+                    fill
+                    unoptimized
+                    className="object-cover"
+                  />
+                </div>
+
+                {/* Container de conteúdo - Padding Reduzido */}
+                <div className="p-5 flex-grow flex-col flex">
+                  {/* PREÇO DINÂMICO: Soma o valor da cesta + adicionais marcados */}
+                  <div className="text-center mb-4">
+                    <span className="text-2xl font-bold text-primary">
+                      R${" "}
+                      {(() => {
+                        const valorBase = parseFloat(
+                          cesta.preco.replace(",", "."),
+                        );
+                        // Somente soma se os adicionais selecionados forem desta cesta específica
+                        const extras =
+                          cestaSelecionada?.id === cesta.id
+                            ? adicionaisSelecionados.reduce(
+                                (acc, i) => acc + i.preco,
+                                0,
+                              )
+                            : 0;
+                        return (valorBase + extras)
+                          .toFixed(2)
+                          .replace(".", ",");
+                      })()}
+                    </span>
+                  </div>
+
+                  {/* LISTA DE ITENS DA CESTA */}
+                  <ul className="space-y-1.5 mb-4 flex-grow border-t pt-3">
+                    {cesta.itens.map((item, i) => (
+                      <li
+                        key={i}
+                        className="text-gray-600 text-xs flex items-center gap-2"
+                      >
+                        <span className="text-accent text-[9px]">❤</span> {item}
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* BOTÃO EXPANSÍVEL DE ADICIONAIS */}
+                  <div className="mb-4">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setCardExpandido(
+                          cardExpandido === cesta.id ? null : cesta.id,
+                        )
+                      }
+                      className="text-[10px] font-bold text-primary uppercase flex items-center gap-1 hover:underline"
+                    >
+                      {cardExpandido === cesta.id
+                        ? "− Fechar Adicionais"
+                        : "+ Adicionais (Opcional)"}
+                    </button>
+
+                    {cardExpandido === cesta.id && (
+                      <div className="mt-3 space-y-2 bg-gray-50 p-3 rounded-xl border border-dashed border-accent/30 animate-in fade-in slide-in-from-top-1">
+                        {ADICIONAIS.map((item) => (
+                          <label
+                            key={item.id}
+                            className="flex items-center justify-between cursor-pointer group"
+                          >
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="checkbox"
+                                className="w-3.5 h-3.5 accent-primary"
+                                checked={
+                                  !!adicionaisSelecionados.find(
+                                    (i) => i.id === item.id,
+                                  )
+                                }
+                                onChange={(e) => {
+                                  // Garante que ao marcar um adicional, a "cestaSelecionada" seja esta
+                                  setCestaSelecionada(cesta);
+                                  if (e.target.checked) {
+                                    setAdicionaisSelecionados([
+                                      ...adicionaisSelecionados,
+                                      item,
+                                    ]);
+                                  } else {
+                                    setAdicionaisSelecionados(
+                                      adicionaisSelecionados.filter(
+                                        (i) => i.id !== item.id,
+                                      ),
+                                    );
+                                  }
+                                }}
+                              />
+                              <span className="text-[11px] text-gray-600">
+                                {item.nome}
+                              </span>
+                            </div>
+                            <span className="text-[10px] font-bold text-primary/60">
+                              + R$ {item.preco.toFixed(2).replace(".", ",")}
+                            </span>
+                          </label>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <button
+                    onClick={() => abrirFormulario(cesta)}
+                    className="w-full bg-secondary text-primary font-bold py-3.5 rounded-xl uppercase tracking-widest text-xs shadow-md hover:brightness-95 transition-all"
+                  >
+                    Quero Essa
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
-      {/* ------------------------------------- */}
 
       {modalAberto && (
         /* 1. Overlay centralizado com p-4 para folga lateral em mobile */
