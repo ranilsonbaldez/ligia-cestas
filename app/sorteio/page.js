@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
+import FotoSorteio from "../components/FotoSorteio";
 
 export default function RifaPage() {
   const [selectedNumbers, setSelectedNumbers] = useState([]);
@@ -101,13 +102,27 @@ export default function RifaPage() {
       </header>
 
       <main className="max-w-4xl mx-auto px-4 py-8">
-        <h1 className="text-2xl font-serif text-[#630d16] text-center uppercase tracking-widest mb-2">
+        <h1 className="text-1xl font-serif bold text-[#630d16] text-center uppercase tracking-widest mb-2">
           Sorteio Especial Dia das Mães
         </h1>
-        <p className="text-center text-gray-600 mb-8">
+        <p className="text-center text-gray-600 text-xs mb-4">
           Escolha seus números e concorra a uma Cesta Premium!
         </p>
-        <p className="text-center text-gray-700 font-medium mb-8">
+
+        <div className="flex flex-col items-center justify-center mb-4">
+          <p className="text-xs font-bold text-[#630d16] uppercase tracking-widest mb-3">
+            Confira o Prêmio:
+          </p>
+          <FotoSorteio
+            src="/cesta-sorteio.png" // Certifique-se que a foto está em public/images/
+            alt="Cesta Premium Dia das Mães"
+          />
+          <p className="text-[10px] text-gray-400 mt-2 italic">
+            (Clique na imagem para ampliar)
+          </p>
+        </div>
+
+        <p className="text-center text-gray-700 font-medium text-xs my-4 mb-4">
           Sorteio dia{" "}
           <span className="font-bold text-[#630d16]">08/05/2026</span> às{" "}
           <span className="font-bold text-[#630d16]">19h</span> pelo nosso
