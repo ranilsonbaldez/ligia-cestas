@@ -249,11 +249,24 @@ export default function RifaPage() {
                     WhatsApp / Telefone
                   </label>
                   <input
-                    name="telefone" // <--- Adicionado
+                    name="telefone"
                     required
                     type="tel"
+                    inputMode="numeric"
+                    maxLength="15" // Limita o tamanho visual (98)99999-9999
                     className="w-full border-b-2 border-gray-200 focus:border-[#D4AF37] outline-none py-2 transition-colors"
-                    placeholder="(98) 9..."
+                    placeholder="(98) 99999-9999"
+                    onChange={(e) => {
+                      let value = e.target.value.replace(/\D/g, ""); // Remove tudo que não é número
+
+                      // Aplica a máscara (XX)XXXXX-XXXX
+                      if (value.length <= 11) {
+                        value = value.replace(/^(\d{2})(\d)/g, "($1) $2");
+                        value = value.replace(/(\d{5})(\d)/, "$1-$2");
+                      }
+
+                      e.target.value = value;
+                    }}
                   />
                 </div>
                 <div>
@@ -266,7 +279,7 @@ export default function RifaPage() {
                 </div>
               </div>
 
-              <div>
+              {/* <div>
                 <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
                   Endereço para Entrega
                 </label>
@@ -277,7 +290,7 @@ export default function RifaPage() {
                   className="w-full border-b-2 border-gray-200 focus:border-[#D4AF37] outline-none py-2 transition-colors resize-none"
                   placeholder="Rua, número, bairro..."
                 ></textarea>
-              </div>
+              </div> */}
 
               <div className="pt-4 flex gap-3">
                 <button

@@ -2,10 +2,18 @@
 
 @theme {
   /* Definição da nossa paleta elegante */
-  --color-primary: #630d16;    /* Burgundy (Vinho) */
-  --color-secondary: #d4af37;  /* Dourado */
-  --color-accent: #e2a7a1;     /* Rosa Seco */
-  --color-soft: #fff9f5;       /* Fundo Creme */
+  --color-primary: #630d16; /* Burgundy (Vinho) */
+  --color-secondary: #d4af37; /* Dourado */
+  --color-accent: #e2a7a1; /* Rosa Seco */
+  --color-soft: #fff9f5; /* Fundo Creme */
+}
+
+@font-face {
+  font-family: "BillionMiracles";
+  src: url("/fonts/billion.ttf") format("truetype"); /* Verifique se o nome do arquivo tem espaço ou não */
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 :root {

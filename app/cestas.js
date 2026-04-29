@@ -29,7 +29,7 @@ export const cestas = [
       "Pães de Queijo (180g)",
       "Torradinhas",
       "Biscoitos Folheados",
-      "Bolinhas de Tapioca (180g)",
+      "Bolinhos de Tapioca (180g)",
       "3 Iogurtes",
       "3 Sucos Naturais (300ml)",
       "3 Sachês de Cappuccino",

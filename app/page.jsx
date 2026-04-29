@@ -148,7 +148,7 @@ export default function Home() {
 
       <section className="max-w-7xl mx-auto px-4 pt-2 pb-10">
         <h2 className="text-lg md:text-xl font-serif text-primary text-center uppercase tracking-[0.1em] leading-none my-6">
-          Nossos Cardápios
+          Cardápio Especial para o dia das Mães
         </h2>
 
         <div className="block w-full">
@@ -169,7 +169,18 @@ export default function Home() {
               >
                 {/* Cabeçalho do Card - Slim */}
                 <div className="bg-primary p-3 text-center border-b-2 border-secondary/30">
-                  <h3 className="text-lg font-serif font-bold text-secondary tracking-tighter leading-tight truncate">
+                  <h3 className="text-base font-serif italic text-secondary leading-snug">
+                    {/* <h3
+                    className="text-secondary text-4xl"
+                    style={{
+                      fontFamily:
+                        "'BillionMiracles', 'Apple Chancery', cursive",
+                      fontWeight: "400",
+                      letterSpacing: "0px", // IMPORTANTE: Fontes script não podem ter espaço entre letras
+                      textTransform: "none", // IMPORTANTE: Não use uppercase
+                      paddingBottom: "15px", // Dá espaço para a "cauda" das letras
+                    }}
+                  > */}
                     {cesta.nome}
                   </h3>
                 </div>
