@@ -141,8 +141,8 @@ export default function AdminGestao() {
         </button>
       </header>
 
-      <div className="bg-white shadow-sm rounded-lg overflow-hidden border border-gray-200">
-        <table className="w-full text-left table-auto">
+      <div className="bg-white shadow-sm rounded-lg overflow-x-auto border border-gray-200">
+        <table className="min-w-max w-full text-left table-auto">
           <thead className="bg-[#630d16] text-white text-[11px] uppercase">
             <tr>
               <th className="px-3 py-2">Nº</th>
