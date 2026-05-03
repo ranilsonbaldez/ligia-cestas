@@ -2,7 +2,7 @@ export const cestas = [
   {
     id: 1,
     nome: "Café Mimo de Mãe",
-    preco: "185,00",
+    preco: "170,00",
     imagem: "/cesta-mae.png",
     itens: [
       "Mini Bolo",
