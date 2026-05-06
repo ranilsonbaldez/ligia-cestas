@@ -22,7 +22,7 @@ export const cestas = [
     id: 2,
     nome: "Para Compartilhar",
     preco: "385,00",
-    imagem: "/cesta-mae.png",
+    imagem: "/cesta-mae2.png",
     itens: [
       "Mini Bolo",
       "6 Sanduíches de Queijo e Presunto",
