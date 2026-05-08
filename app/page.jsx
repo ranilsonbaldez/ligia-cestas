@@ -127,7 +127,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Seção de Chamada para o Sorteio - Minimalista */}
+      {/* Seção de Chamada para o Sorteio - Minimalista
       <section className="py-10 px-6 border-b border-gray-100 bg-white">
         <div className="max-w-xl mx-auto text-center">
           <h2 className="text-[#630d16] text-xl md:text-2xl font-bold mb-2">
@@ -144,7 +144,7 @@ export default function Home() {
             Participar do Sorteio
           </Link>
         </div>
-      </section>
+      </section> */}
 
       <section className="max-w-7xl mx-auto px-4 pt-2 pb-10">
         <h2 className="text-lg md:text-xl font-serif text-primary text-center uppercase tracking-[0.1em] leading-none my-6">
