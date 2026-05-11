@@ -148,7 +148,7 @@ export default function Home() {
 
       <section className="max-w-7xl mx-auto px-4 pt-2 pb-10">
         <h2 className="text-lg md:text-xl font-serif text-primary text-center uppercase tracking-[0.1em] leading-none my-6">
-          Cardápio Especial para o dia das Mães
+          Nosso Cardápio
         </h2>
 
         <div className="block w-full">
