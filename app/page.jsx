@@ -454,7 +454,12 @@ export default function Home() {
                         {/* Campo de Data */}
                         <div className="relative">
                           <input
-                            type="date"
+                            type={form.data ? "date" : "text"} // Se tiver valor, mantém date
+                            placeholder="Data da Entrega"
+                            onFocus={(e) => (e.target.type = "date")}
+                            onBlur={(e) =>
+                              !e.target.value && (e.target.type = "text")
+                            }
                             className="w-full h-12 px-4 rounded-xl border border-accent/20 bg-white text-sm focus:outline-none focus:border-primary text-gray-600"
                             required
                             min={dataMinima}
@@ -468,7 +473,12 @@ export default function Home() {
                         {/* Campo de Hora - Formato Nativo */}
                         <div className="relative">
                           <input
-                            type="time"
+                            type={form.horario ? "time" : "text"} // Mantém 'time' se houver valor, senão 'text' para o placeholder
+                            placeholder="Hora da Entrega"
+                            onFocus={(e) => (e.target.type = "time")}
+                            onBlur={(e) =>
+                              !e.target.value && (e.target.type = "text")
+                            }
                             className="w-full h-12 px-4 rounded-xl border border-accent/20 bg-white text-sm focus:outline-none focus:border-primary text-gray-600"
                             required
                             value={form.horario || ""}
