@@ -42,6 +42,7 @@ export const cestas = [
     nome: "Café Bom Dia com Amor",
     preco: "90,00",
     imagem: "/bom-dia.png",
+    aceitaAdicionais: true,
     itens: [
       "Caixa Decorativa",
       "Cartinha Personalizada",
@@ -49,8 +50,8 @@ export const cestas = [
       "2 Sanduíches de Queijo e Presunto",
       "Pão de Queijo (60g)",
       "Maçã Fresca",
-      "Uva",
-      "Kiwi",
+      "Cookie",
+      "Mamão",
       "Suco Natural (300ml)",
       "Mini Manteiga",
       "Sachê de Cappuccino",
@@ -61,6 +62,7 @@ export const cestas = [
     nome: "Café Manhã dos Sonhos",
     preco: "180,00",
     imagem: "/sonhos.png",
+    aceitaAdicionais: true,
     itens: [
       "Caixa Decorativa",
       "Cartinha Personalizada",
@@ -86,6 +88,7 @@ export const cestas = [
     nome: "Café Light",
     preco: "150,00",
     imagem: "/ligth.png", // Imagem sugerida com frutas e visual leve
+    aceitaAdicionais: true,
     itens: [
       "Água de Coco",
       "Suco Natural (Sem Açúcar)",
@@ -94,11 +97,29 @@ export const cestas = [
       "Mini Manteiga",
       "2 Sanduíches Light",
       "Iogurte Zero Açúcar",
-      "Requeijão Light",
       "Uva",
       "Maçã",
       "Kiwi",
       "Sachê de Cappuccino",
+    ],
+  },
+  {
+    id: 4,
+    nome: "Cesta Kids",
+    preco: "95,00",
+    imagem: "/cesta-kids.png", // Imagem sugerida com frutas e visual leve
+    aceitaAdicionais: false,
+    itens: [
+      "Balde de Pipoca",
+      "Balões",
+      "Nescau",
+      "Danone",
+      "Bolinho Bauduco",
+      "Jujubas",
+      "Kit Kat",
+      "Fini",
+      "Mini Brinquedo Surpresa (Menino/Menina)",
+      "*Opcional (Balão Bubble) R$ 10,00",
     ],
   },
 ];
