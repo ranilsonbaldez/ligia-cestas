@@ -100,9 +100,9 @@ export default function Home() {
   };
 
   // Calcula o dia de amanhã
-  const amanha = new Date();
-  amanha.setDate(amanha.getDate() + 1);
-  const dataMinima = amanha.toISOString().split("T")[0];
+const hoje = new Date();
+hoje.setMinutes(hoje.getMinutes() - hoje.getTimezoneOffset());
+const dataMinima = hoje.toISOString().split("T")[0];
 
   return (
     <main className="min-h-screen flex flex-col bg-soft">
@@ -472,30 +472,35 @@ export default function Home() {
                           />
                         </div>
 
-                        {/* Campo de Hora - Formato Nativo */}
-                        <div className="relative">
-                          <input
-                            type={form.horario ? "time" : "text"} // Mantém 'time' se houver valor, senão 'text' para o placeholder
-                            placeholder="Hora da Entrega"
-                            onFocus={(e) => (e.target.type = "time")}
-                            onBlur={(e) =>
-                              !e.target.value && (e.target.type = "text")
-                            }
-                            className="w-full h-12 px-4 rounded-xl border border-accent/20 bg-white text-sm focus:outline-none focus:border-primary text-gray-600"
-                            required
-                            value={form.horario || ""}
-                            onChange={(e) =>
-                              setForm({ ...form, horario: e.target.value })
-                            }
-                          />
-                          <style jsx>{`
-                            input[type="time"]:inline-block:before {
-                              content: "Hora";
-                              margin-right: 0.5em;
-                              color: #9ca3af;
-                            }
-                          `}</style>
-                        </div>
+{/* Campo de Hora - Formato Nativo com Validação (06:45 às 21:00) */}
+<div className="relative">
+  <input
+    type={form.horario ? "time" : "text"} // Mantém 'time' se houver valor, senão 'text' para o placeholder
+    placeholder="Hora da Entrega"
+    onFocus={(e) => (e.target.type = "time")}
+    onBlur={(e) =>
+      !e.target.value && (e.target.type = "text")
+    }
+    className="w-full h-12 px-4 rounded-xl border border-accent/20 bg-white text-sm focus:outline-none focus:border-primary text-gray-600"
+    required
+    value={form.horario || ""}
+    onChange={(e) => {
+      const horarioDigitado = e.target.value; // Formato retornado pelo input: "HH:MM"
+
+      if (horarioDigitado) {
+        // Validação estrita: se for menor que 06:45 ou maior que 21:00
+        if (horarioDigitado < "06:45" || horarioDigitado > "21:00") {
+          alert("Ops! Nossas entregas são realizadas apenas entre 06:45 e 21:00.");
+          setForm({ ...form, horario: "" }); // Reseta o campo para o placeholder voltar
+          return;
+        }
+      }
+
+      // Se estiver no horário correto, atualiza o estado normalmente
+      setForm({ ...form, horario: horarioDigitado });
+    }}
+  />
+</div>
                       </div>
                     </div>
 
