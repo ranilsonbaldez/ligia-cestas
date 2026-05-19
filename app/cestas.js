@@ -90,6 +90,7 @@ export const cestas = [
     imagem: "/ligth.png", // Imagem sugerida com frutas e visual leve
     aceitaAdicionais: true,
     itens: [
+      "Caixa Decorativa",
       "Água de Coco",
       "Suco Natural (Sem Açúcar)",
       "Mamão com Chia",
@@ -108,7 +109,7 @@ export const cestas = [
     nome: "Cesta Kids",
     preco: "95,00",
     imagem: "/cesta-kids.png", // Imagem sugerida com frutas e visual leve
-    aceitaAdicionais: false,
+    aceitaAdicionais: especifico,
     itens: [
       "Balde de Pipoca",
       "Balões",
@@ -119,7 +120,6 @@ export const cestas = [
       "Kit Kat",
       "Fini",
       "Mini Brinquedo Surpresa (Menino/Menina)",
-      "*Opcional (Balão Bubble) R$ 10,00",
     ],
   },
 ];
@@ -132,4 +132,8 @@ export const ADICIONAIS = [
   { id: "barra", nome: "Barra de chocolate", preco: 12.0 },
   { id: "choc_quente", nome: "Chocolate Quente 300ml", preco: 9.9 },
   { id: "pao_queijo", nome: "Pães de queijo 60g", preco: 8.0 },
+];
+
+export const ADICIONAIS_KIDS = [
+  { id: 101, nome: "Balão Bubble", preco: 10.00 },
 ];

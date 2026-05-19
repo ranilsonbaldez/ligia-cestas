@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { cestas, ADICIONAIS } from "./cestas";
+import { cestas, ADICIONAIS, ADICIONAIS_KIDS } from "./cestas";
 
 export default function Home() {
   const [modalAberto, setModalAberto] = useState(false);
@@ -235,69 +235,78 @@ const dataMinima = hoje.toISOString().split("T")[0];
                     ))}
                   </ul>
 
-                  {/* BOTÃO EXPANSÍVEL DE ADICIONAIS */}
-                  {cesta.aceitaAdicionais !== false && (
-                    <div className="mb-4">
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setCardExpandido(
-                            cardExpandido === cesta.id ? null : cesta.id,
-                          )
-                        }
-                        className="text-[10px] font-bold text-primary uppercase flex items-center gap-1 hover:underline"
-                      >
-                        {cardExpandido === cesta.id
-                          ? "− Fechar Adicionais"
-                          : "+ Adicionais (Opcional)"}
-                      </button>
+{/* BOTÃO EXPANSÍVEL DE ADICIONAIS DINÂMICO */}
+{cesta.aceitaAdicionais !== false && (
+  <div className="mb-4">
+    {/* Decisão de lista: se 'aceitaAdicionais' for igual a 'especifico', usa a nova lista. Caso contrário, usa a padrão */}
+    {(() => {
+      const listaParaRenderizar = cesta.aceitaAdicionais === "especifico" ? ADICIONAIS_KIDS : ADICIONAIS;
 
-                      {cardExpandido === cesta.id && (
-                        <div className="mt-3 space-y-2 bg-gray-50 p-3 rounded-xl border border-dashed border-accent/30 animate-in fade-in slide-in-from-top-1">
-                          {ADICIONAIS.map((item) => (
-                            <label
-                              key={item.id}
-                              className="flex items-center justify-between cursor-pointer group"
-                            >
-                              <div className="flex items-center gap-2">
-                                <input
-                                  type="checkbox"
-                                  className="w-3.5 h-3.5 accent-primary"
-                                  checked={
-                                    !!adicionaisSelecionados.find(
-                                      (i) => i.id === item.id,
-                                    )
-                                  }
-                                  onChange={(e) => {
-                                    // Garante que ao marcar um adicional, a "cestaSelecionada" seja esta
-                                    setCestaSelecionada(cesta);
-                                    if (e.target.checked) {
-                                      setAdicionaisSelecionados([
-                                        ...adicionaisSelecionados,
-                                        item,
-                                      ]);
-                                    } else {
-                                      setAdicionaisSelecionados(
-                                        adicionaisSelecionados.filter(
-                                          (i) => i.id !== item.id,
-                                        ),
-                                      );
-                                    }
-                                  }}
-                                />
-                                <span className="text-[11px] text-gray-600">
-                                  {item.nome}
-                                </span>
-                              </div>
-                              <span className="text-[10px] font-bold text-primary/60">
-                                + R$ {item.preco.toFixed(2).replace(".", ",")}
-                              </span>
-                            </label>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )}
+      return (
+        <>
+          <button
+            type="button"
+            onClick={() =>
+              setCardExpandido(
+                cardExpandido === cesta.id ? null : cesta.id,
+              )
+            }
+            className="text-[10px] font-bold text-primary uppercase flex items-center gap-1 hover:underline"
+          >
+            {cardExpandido === cesta.id
+              ? "− Fechar Adicionais"
+              : "+ Adicionais (Opcional)"}
+          </button>
+
+          {cardExpandido === cesta.id && (
+            <div className="mt-3 space-y-2 bg-gray-50 p-3 rounded-xl border border-dashed border-accent/30 animate-in fade-in slide-in-from-top-1">
+              {listaParaRenderizar.map((item) => (
+                <label
+                  key={item.id}
+                  className="flex items-center justify-between cursor-pointer group"
+                >
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      className="w-3.5 h-3.5 accent-primary"
+                      checked={
+                        !!adicionaisSelecionados.find(
+                          (i) => i.id === item.id,
+                        )
+                      }
+                      onChange={(e) => {
+                        // Garante que ao marcar um adicional, a "cestaSelecionada" seja esta
+                        setCestaSelecionada(cesta);
+                        if (e.target.checked) {
+                          setAdicionaisSelecionados([
+                            ...adicionaisSelecionados,
+                            item,
+                          ]);
+                        } else {
+                          setAdicionaisSelecionados(
+                            adicionaisSelecionados.filter(
+                              (i) => i.id !== item.id,
+                            ),
+                          );
+                        }
+                      }}
+                    />
+                    <span className="text-[11px] text-gray-600">
+                      {item.nome}
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-bold text-primary/60">
+                    + R$ {item.preco.toFixed(2).replace(".", ",")}
+                  </span>
+                </label>
+              ))}
+            </div>
+          )}
+        </>
+      );
+    })()}
+  </div>
+)}
 
                   <button
                     onClick={() => abrirFormulario(cesta)}
