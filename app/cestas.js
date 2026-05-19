@@ -109,7 +109,7 @@ export const cestas = [
     nome: "Cesta Kids",
     preco: "95,00",
     imagem: "/cesta-kids.png", // Imagem sugerida com frutas e visual leve
-    aceitaAdicionais: especifico,
+    aceitaAdicionais: "especifico",
     itens: [
       "Balde de Pipoca",
       "Balões",
