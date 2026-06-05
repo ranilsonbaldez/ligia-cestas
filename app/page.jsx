@@ -2,7 +2,12 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { cestas, ADICIONAIS, ADICIONAIS_KIDS } from "./cestas";
+import {
+  cestas,
+  ADICIONAIS,
+  ADICIONAIS_KIDS,
+  ADICIONAIS_NAMORADOS,
+} from "./cestas";
 
 export default function Home() {
   const [modalAberto, setModalAberto] = useState(false);
@@ -100,9 +105,9 @@ export default function Home() {
   };
 
   // Calcula o dia de amanhã
-const hoje = new Date();
-hoje.setMinutes(hoje.getMinutes() - hoje.getTimezoneOffset());
-const dataMinima = hoje.toISOString().split("T")[0];
+  const hoje = new Date();
+  hoje.setMinutes(hoje.getMinutes() - hoje.getTimezoneOffset());
+  const dataMinima = hoje.toISOString().split("T")[0];
 
   return (
     <main className="min-h-screen flex flex-col bg-soft">
@@ -235,78 +240,85 @@ const dataMinima = hoje.toISOString().split("T")[0];
                     ))}
                   </ul>
 
-{/* BOTÃO EXPANSÍVEL DE ADICIONAIS DINÂMICO */}
-{cesta.aceitaAdicionais !== false && (
-  <div className="mb-4">
-    {/* Decisão de lista: se 'aceitaAdicionais' for igual a 'especifico', usa a nova lista. Caso contrário, usa a padrão */}
-    {(() => {
-      const listaParaRenderizar = cesta.aceitaAdicionais === "especifico" ? ADICIONAIS_KIDS : ADICIONAIS;
+                  {/* BOTÃO EXPANSÍVEL DE ADICIONAIS DINÂMICO */}
+                  {cesta.aceitaAdicionais !== false && (
+                    <div className="mb-4">
+                      {/* Decisão dinâmica da lista com base na propriedade aceitaAdicionais */}
+                      {(() => {
+                        let listaParaRenderizar = ADICIONAIS; // Lista padrão por padrão
 
-      return (
-        <>
-          <button
-            type="button"
-            onClick={() =>
-              setCardExpandido(
-                cardExpandido === cesta.id ? null : cesta.id,
-              )
-            }
-            className="text-[10px] font-bold text-primary uppercase flex items-center gap-1 hover:underline"
-          >
-            {cardExpandido === cesta.id
-              ? "− Fechar Adicionais"
-              : "+ Adicionais (Opcional)"}
-          </button>
-
-          {cardExpandido === cesta.id && (
-            <div className="mt-3 space-y-2 bg-gray-50 p-3 rounded-xl border border-dashed border-accent/30 animate-in fade-in slide-in-from-top-1">
-              {listaParaRenderizar.map((item) => (
-                <label
-                  key={item.id}
-                  className="flex items-center justify-between cursor-pointer group"
-                >
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      className="w-3.5 h-3.5 accent-primary"
-                      checked={
-                        !!adicionaisSelecionados.find(
-                          (i) => i.id === item.id,
-                        )
-                      }
-                      onChange={(e) => {
-                        // Garante que ao marcar um adicional, a "cestaSelecionada" seja esta
-                        setCestaSelecionada(cesta);
-                        if (e.target.checked) {
-                          setAdicionaisSelecionados([
-                            ...adicionaisSelecionados,
-                            item,
-                          ]);
-                        } else {
-                          setAdicionaisSelecionados(
-                            adicionaisSelecionados.filter(
-                              (i) => i.id !== item.id,
-                            ),
-                          );
+                        if (cesta.aceitaAdicionais === "kids") {
+                          listaParaRenderizar = ADICIONAIS_KIDS;
+                        } else if (cesta.aceitaAdicionais === "namorados") {
+                          listaParaRenderizar = ADICIONAIS_NAMORADOS;
                         }
-                      }}
-                    />
-                    <span className="text-[11px] text-gray-600">
-                      {item.nome}
-                    </span>
-                  </div>
-                  <span className="text-[10px] font-bold text-primary/60">
-                    + R$ {item.preco.toFixed(2).replace(".", ",")}
-                  </span>
-                </label>
-              ))}
-            </div>
-          )}
-        </>
-      );
-    })()}
-  </div>
-)}
+
+                        return (
+                          <>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setCardExpandido(
+                                  cardExpandido === cesta.id ? null : cesta.id,
+                                )
+                              }
+                              className="text-[10px] font-bold text-primary uppercase flex items-center gap-1 hover:underline"
+                            >
+                              {cardExpandido === cesta.id
+                                ? "− Fechar Adicionais"
+                                : "+ Adicionais (Opcional)"}
+                            </button>
+
+                            {cardExpandido === cesta.id && (
+                              <div className="mt-3 space-y-2 bg-gray-50 p-3 rounded-xl border border-dashed border-accent/30 animate-in fade-in slide-in-from-top-1">
+                                {listaParaRenderizar.map((item) => (
+                                  <label
+                                    key={item.id}
+                                    className="flex items-center justify-between cursor-pointer group"
+                                  >
+                                    <div className="flex items-center gap-2">
+                                      <input
+                                        type="checkbox"
+                                        className="w-3.5 h-3.5 accent-primary"
+                                        checked={
+                                          !!adicionaisSelecionados.find(
+                                            (i) => i.id === item.id,
+                                          )
+                                        }
+                                        onChange={(e) => {
+                                          // Garante que ao marcar um adicional, a "cestaSelecionada" seja esta
+                                          setCestaSelecionada(cesta);
+                                          if (e.target.checked) {
+                                            setAdicionaisSelecionados([
+                                              ...adicionaisSelecionados,
+                                              item,
+                                            ]);
+                                          } else {
+                                            setAdicionaisSelecionados(
+                                              adicionaisSelecionados.filter(
+                                                (i) => i.id !== item.id,
+                                              ),
+                                            );
+                                          }
+                                        }}
+                                      />
+                                      <span className="text-[11px] text-gray-600">
+                                        {item.nome}
+                                      </span>
+                                    </div>
+                                    <span className="text-[10px] font-bold text-primary/60">
+                                      + R${" "}
+                                      {item.preco.toFixed(2).replace(".", ",")}
+                                    </span>
+                                  </label>
+                                ))}
+                              </div>
+                            )}
+                          </>
+                        );
+                      })()}
+                    </div>
+                  )}
 
                   <button
                     onClick={() => abrirFormulario(cesta)}
@@ -481,35 +493,40 @@ const dataMinima = hoje.toISOString().split("T")[0];
                           />
                         </div>
 
-{/* Campo de Hora - Formato Nativo com Validação (06:45 às 21:00) */}
-<div className="relative">
-  <input
-    type={form.horario ? "time" : "text"} // Mantém 'time' se houver valor, senão 'text' para o placeholder
-    placeholder="Hora da Entrega"
-    onFocus={(e) => (e.target.type = "time")}
-    onBlur={(e) =>
-      !e.target.value && (e.target.type = "text")
-    }
-    className="w-full h-12 px-4 rounded-xl border border-accent/20 bg-white text-sm focus:outline-none focus:border-primary text-gray-600"
-    required
-    value={form.horario || ""}
-    onChange={(e) => {
-      const horarioDigitado = e.target.value; // Formato retornado pelo input: "HH:MM"
+                        {/* Campo de Hora - Formato Nativo com Validação (06:45 às 21:00) */}
+                        <div className="relative">
+                          <input
+                            type={form.horario ? "time" : "text"} // Mantém 'time' se houver valor, senão 'text' para o placeholder
+                            placeholder="Hora da Entrega"
+                            onFocus={(e) => (e.target.type = "time")}
+                            onBlur={(e) =>
+                              !e.target.value && (e.target.type = "text")
+                            }
+                            className="w-full h-12 px-4 rounded-xl border border-accent/20 bg-white text-sm focus:outline-none focus:border-primary text-gray-600"
+                            required
+                            value={form.horario || ""}
+                            onChange={(e) => {
+                              const horarioDigitado = e.target.value; // Formato retornado pelo input: "HH:MM"
 
-      if (horarioDigitado) {
-        // Validação estrita: se for menor que 06:45 ou maior que 21:00
-        if (horarioDigitado < "06:45" || horarioDigitado > "21:00") {
-          alert("Ops! Nossas entregas são realizadas apenas entre 06:45 e 21:00.");
-          setForm({ ...form, horario: "" }); // Reseta o campo para o placeholder voltar
-          return;
-        }
-      }
+                              if (horarioDigitado) {
+                                // Validação estrita: se for menor que 06:45 ou maior que 21:00
+                                if (
+                                  horarioDigitado < "06:45" ||
+                                  horarioDigitado > "21:00"
+                                ) {
+                                  alert(
+                                    "Ops! Nossas entregas são realizadas apenas entre 06:45 e 21:00.",
+                                  );
+                                  setForm({ ...form, horario: "" }); // Reseta o campo para o placeholder voltar
+                                  return;
+                                }
+                              }
 
-      // Se estiver no horário correto, atualiza o estado normalmente
-      setForm({ ...form, horario: horarioDigitado });
-    }}
-  />
-</div>
+                              // Se estiver no horário correto, atualiza o estado normalmente
+                              setForm({ ...form, horario: horarioDigitado });
+                            }}
+                          />
+                        </div>
                       </div>
                     </div>
 

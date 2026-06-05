@@ -37,30 +37,53 @@ export const cestas = [
   //     "Cartinha Personalizada",
   //   ],
   // },
+
+  //----------------------------------------------------------------------//
+
+  // {
+  //   id: 1,
+  //   nome: "Café Bom Dia com Amor",
+  //   preco: "90,00",
+  //   imagem: "/bom-dia.png",
+  //   aceitaAdicionais: true,
+  //   itens: [
+  //     "Caixa Decorativa",
+  //     "Cartinha Personalizada",
+  //     "Arranjo de Balões",
+  //     "2 Sanduíches de Queijo e Presunto",
+  //     "Pão de Queijo (60g)",
+  //     "Maçã Fresca",
+  //     "Cookie",
+  //     "Mamão",
+  //     "Suco Natural (300ml)",
+  //     "Mini Manteiga",
+  //     "Sachê de Cappuccino",
+  //   ],
+  // },
   {
     id: 1,
-    nome: "Café Bom Dia com Amor",
-    preco: "90,00",
-    imagem: "/bom-dia.png",
-    aceitaAdicionais: true,
+    nome: "Café Especial Dia dos Namorados",
+    preco: "169,90", // Formato Number para o carrinho calcular corretamente
+    imagem: "/namorados.png", // Lembre de subir a foto com esse nome na pasta public
+    aceitaAdicionais: "namorados",
     itens: [
-      "Caixa Decorativa",
-      "Cartinha Personalizada",
-      "Arranjo de Balões",
-      "2 Sanduíches de Queijo e Presunto",
-      "Pão de Queijo (60g)",
-      "Maçã Fresca",
-      "Cookie",
-      "Mamão",
-      "Suco Natural (300ml)",
-      "Mini Manteiga",
+      "Caixote Decorativo",
+      "Balões Temáticos",
+      "Bolo de Trigo (150g)",
+      "Bolinhos de Tapioca",
+      "Suco Natural (200ml)",
+      "Torradinhas",
+      "Minis Pães Delícia com Frango Cremoso",
+      "Mini Geleia de Goiaba",
       "Sachê de Cappuccino",
+      "Minis Croissants",
+      "Polaroide com Foto do Casal",
     ],
   },
   {
     id: 2,
     nome: "Café Manhã dos Sonhos",
-    preco: "180,00",
+    preco: "220,00",
     imagem: "/sonhos.png",
     aceitaAdicionais: true,
     itens: [
@@ -73,8 +96,8 @@ export const cestas = [
       "2 Sanduíches de Queijo e Presunto",
       "Iogurte",
       "Bolo de Trigo",
-      "Suco Natural (300ml)",
-      "Chocolate Quente (300ml)",
+      "Suco Natural (200ml)",
+      "Chocolate Quente (200ml)",
       "Mini Manteiga",
       "Sachê de Cappuccino",
       "Torradas",
@@ -83,33 +106,33 @@ export const cestas = [
       "Uvas",
     ],
   },
+  // {
+  //   id: 3,
+  //   nome: "Café Light",
+  //   preco: "150,00",
+  //   imagem: "/ligth.png", // Imagem sugerida com frutas e visual leve
+  //   aceitaAdicionais: true,
+  //   itens: [
+  //     "Caixa Decorativa",
+  //     "Água de Coco",
+  //     "Suco Natural (Sem Açúcar)",
+  //     "Mamão com Chia",
+  //     "Torradas",
+  //     "Mini Manteiga",
+  //     "2 Sanduíches Light",
+  //     "Iogurte Zero Açúcar",
+  //     "Uva",
+  //     "Maçã",
+  //     "Kiwi",
+  //     "Sachê de Cappuccino",
+  //   ],
+  // },
   {
     id: 3,
-    nome: "Café Light",
-    preco: "150,00",
-    imagem: "/ligth.png", // Imagem sugerida com frutas e visual leve
-    aceitaAdicionais: true,
-    itens: [
-      "Caixa Decorativa",
-      "Água de Coco",
-      "Suco Natural (Sem Açúcar)",
-      "Mamão com Chia",
-      "Torradas",
-      "Mini Manteiga",
-      "2 Sanduíches Light",
-      "Iogurte Zero Açúcar",
-      "Uva",
-      "Maçã",
-      "Kiwi",
-      "Sachê de Cappuccino",
-    ],
-  },
-  {
-    id: 4,
     nome: "Cesta Kids",
     preco: "95,00",
     imagem: "/cesta-kids.png", // Imagem sugerida com frutas e visual leve
-    aceitaAdicionais: "especifico",
+    aceitaAdicionais: "kids",
     itens: [
       "Balde de Pipoca",
       "Balões",
@@ -126,7 +149,7 @@ export const cestas = [
 
 export const ADICIONAIS = [
   { id: "ferrero", nome: "Ferreiro Rocher 3 unid", preco: 8.0 },
-  { id: "suco", nome: "Suco natural 300ml", preco: 7.0 },
+  { id: "suco", nome: "Suco natural 200ml", preco: 7.0 },
   { id: "sanduiche", nome: "Sanduíche de Queijo e Presunto", preco: 5.0 },
   { id: "croissant", nome: "Croissant", preco: 8.0 },
   { id: "barra", nome: "Barra de chocolate", preco: 12.0 },
@@ -134,6 +157,9 @@ export const ADICIONAIS = [
   { id: "pao_queijo", nome: "Pães de queijo 60g", preco: 8.0 },
 ];
 
-export const ADICIONAIS_KIDS = [
-  { id: 101, nome: "Balão Bubble", preco: 10.00 },
+export const ADICIONAIS_KIDS = [{ id: 101, nome: "Balão Bubble", preco: 10.0 }];
+
+export const ADICIONAIS_NAMORADOS = [
+  { id: "suco", nome: "Suco natural 200ml", preco: 7.0 },
+  { id: "pao_queijo", nome: "Pães de queijo 60g", preco: 8.0 },
 ];
