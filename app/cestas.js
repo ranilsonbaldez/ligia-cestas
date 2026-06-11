@@ -63,7 +63,7 @@ export const cestas = [
   {
     id: 1,
     nome: "Café Especial Dia dos Namorados",
-    preco: "169,90", // Formato Number para o carrinho calcular corretamente
+    preco: "160,00", // Formato Number para o carrinho calcular corretamente
     imagem: "/namorados.png", // Lembre de subir a foto com esse nome na pasta public
     aceitaAdicionais: "namorados",
     itens: [
