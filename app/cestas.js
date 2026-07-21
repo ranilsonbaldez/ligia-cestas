@@ -62,7 +62,7 @@ export const cestas = [
     "Iogurte Grego",
     "Bolinhos de Tapioca (50g)"
   ]
-}
+},
   {
     id: 2,
     nome: "Café Bom Dia com Amor",
