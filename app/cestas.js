@@ -38,10 +38,33 @@ export const cestas = [
   //   ],
   // },
 
+
   //----------------------------------------------------------------------//
 
+
   {
-    id: 1,
+  id: 1,
+  nome: "Cesta Especial Dia dos Pais",
+  preco: "160,00",
+  imagem: "/dia-dos-pais.png",
+  aceitaAdicionais: false,
+  itens: [
+    "Caixote",
+    "Carta Personalizada",
+    "Balão Personalizado",
+    "Foto Polaroide",
+    "Suco Natural (200ml)",
+    "Mini Bolo (150g)",
+    "Sachê de Cappuccino",
+    "Mini Pães Recheados de Queijo e Presunto",
+    "Mini Croissants (50g)",
+    "Geleia de Goiaba",
+    "Iogurte Grego",
+    "Bolinhos de Tapioca (50g)"
+  ]
+}
+  {
+    id: 2,
     nome: "Café Bom Dia com Amor",
     preco: "90,00",
     imagem: "/bom-dia.png",
@@ -60,28 +83,8 @@ export const cestas = [
       "Sachê de Cappuccino",
     ],
   },
-  // {
-  //   id: 1,
-  //   nome: "Café Especial Dia dos Namorados",
-  //   preco: "160,00", // Formato Number para o carrinho calcular corretamente
-  //   imagem: "/namorados.png", // Lembre de subir a foto com esse nome na pasta public
-  //   aceitaAdicionais: "namorados",
-  //   itens: [
-  //     "Caixote Decorativo",
-  //     "Balões Temáticos",
-  //     "Bolo de Trigo (150g)",
-  //     "Bolinhos de Tapioca",
-  //     "Suco Natural (200ml)",
-  //     "Torradinhas",
-  //     "Mini-pães Delícia com Frango Cremoso",
-  //     "Mini Geleia de Goiaba",
-  //     "Sachê de Cappuccino",
-  //     "Mini Croissants",
-  //     "Polaroide com Foto do Casal",
-  //   ],
-  // },
   {
-    id: 2,
+    id: 3,
     nome: "Café Manhã dos Sonhos",
     preco: "220,00",
     imagem: "/sonhos.png",
@@ -107,7 +110,7 @@ export const cestas = [
     ],
   },
   {
-    id: 3,
+    id: 4,
     nome: "Café Light",
     preco: "150,00",
     imagem: "/ligth.png", // Imagem sugerida com frutas e visual leve
@@ -128,7 +131,7 @@ export const cestas = [
     ],
   },
   {
-    id: 4,
+    id: 5,
     nome: "Cesta Kids",
     preco: "95,00",
     imagem: "/cesta-kids.png", // Imagem sugerida com frutas e visual leve
